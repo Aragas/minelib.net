@@ -1,0 +1,37 @@
+﻿using CWrapped;
+
+namespace MinecraftClient.Data
+{
+    public class MetadataFloat : MetadataEntry
+    {
+        public override byte Identifier { get { return 3; } }
+        public override string FriendlyName { get { return "float"; } }
+
+        public float Value;
+
+        public static implicit operator MetadataFloat(float value)
+        {
+            return new MetadataFloat(value);
+        }
+
+        public MetadataFloat()
+        {
+        }
+
+        public MetadataFloat(float value)
+        {
+            Value = value;
+        }
+
+        public override void FromStream(ref Wrapped stream)
+        {
+            Value = stream.readFloat();
+        }
+
+        public override void WriteTo(ref Wrapped stream, byte index)
+        {
+            stream.writeVarInt(GetKey(index));
+            stream.writeFloat(Value);
+        }
+    }
+}

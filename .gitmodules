@@ -1,0 +1,6 @@
+[submodule "fNbt"]
+	path = fNbt
+	url = https://github.com/fragmer/fNbt
+[submodule "CWrapped"]
+	path = CWrapped
+	url = https://github.com/Aragas/CWrapped.git

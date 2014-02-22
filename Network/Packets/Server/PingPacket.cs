@@ -1,0 +1,24 @@
+using CWrapped;
+
+namespace MinecraftClient.Network.Packets.Server
+{
+    public struct PingPacket : IPacket
+    {
+        public long Time;
+
+        public const byte PacketId = 0x01;
+        public byte Id { get { return 0x01; } }
+
+        public void ReadPacket(ref Wrapped stream)
+        {
+            Time = stream.readLong();
+        }
+
+        public void WritePacket(ref Wrapped stream)
+        {
+            stream.writeVarInt(Id);
+            stream.writeLong(Time);
+            stream.Purge();
+        }
+    }
+}

@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1E2FACE4-F5CA-4323-9641-740C6A551770}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MinecraftClient</RootNamespace>
+    <AssemblyName>MinecraftClient</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MinecraftClient.Network.TestClient</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\EntityProperty.cs" />
+    <Compile Include="Data\EntityPropertyListItem.cs" />
+    <Compile Include="Data\Size.cs" />
+    <Compile Include="Data\SlotData.cs" />
+    <Compile Include="Data\MetadadaShort.cs" />
+    <Compile Include="Data\Metadata.cs" />
+    <Compile Include="Data\MetadataByte.cs" />
+    <Compile Include="Data\MetadataDictionary.cs" />
+    <Compile Include="Data\MetadataEntry.cs" />
+    <Compile Include="Data\MetadataFloat.cs" />
+    <Compile Include="Data\MetadataInt.cs" />
+    <Compile Include="Data\MetadataSlot.cs" />
+    <Compile Include="Data\MetadataString.cs" />
+    <Compile Include="Data\ObjectData.cs" />
+    <Compile Include="Data\Vector3.cs" />
+    <Compile Include="Enums\Animation.cs" />
+    <Compile Include="Enums\ChatMode.cs" />
+    <Compile Include="Enums\EntityEquipmentSlot.cs" />
+    <Compile Include="Enums\ClickModen.cs" />
+    <Compile Include="Enums\ClientStatus.cs" />
+    <Compile Include="Enums\Difficulty.cs" />
+    <Compile Include="Enums\Dimension.cs" />
+    <Compile Include="Enums\GameMode.cs" />
+    <Compile Include="Enums\GameState.cs" />
+    <Compile Include="Enums\DigStatus.cs" />
+    <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\EntityStatus.cs" />
+    <Compile Include="Enums\Face.cs" />
+    <Compile Include="Enums\EntityAction.cs" />
+    <Compile Include="Enums\Mobs.cs" />
+    <Compile Include="Enums\NextState.cs" />
+    <Compile Include="Enums\Objects.cs" />
+    <Compile Include="Enums\ScoreboardPosition.cs" />
+    <Compile Include="Enums\ServerState.cs" />
+    <Compile Include="Enums\TeamMode.cs" />
+    <Compile Include="Network\Packets\Server\AnimationPacket.cs" />
+    <Compile Include="Network\Packets\Server\AttachEntityPacket.cs" />
+    <Compile Include="Network\Packets\Server\BlockActionPacket.cs" />
+    <Compile Include="Network\Packets\Server\BlockBreakAnimationPacket.cs" />
+    <Compile Include="Network\Packets\Server\BlockChangePacket.cs" />
+    <Compile Include="Network\Packets\Server\ChangeGameStatePacket.cs" />
+    <Compile Include="Network\Packets\Server\ChatMessagePacket.cs" />
+    <Compile Include="Network\Packets\Server\BChunkDataPacket.cs" />
+    <Compile Include="Network\Packets\Client\ClientStatusPacket.cs" />
+    <Compile Include="Network\Packets\Server\CloseWindowPacket.cs" />
+    <Compile Include="Network\Packets\Server\CollectItemPacket.cs" />
+    <Compile Include="Network\Packets\Server\ConfirmTransactionPacket.cs" />
+    <Compile Include="Network\Packets\Server\HandshakePacket.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Network\Events\IPacketEventArgs.cs" />
+    <Compile Include="Network\Events\MinecraftEvent.cs" />
+    <Compile Include="Minecraft.cs" />
+    <Compile Include="MinecraftEvents.cs" />
+    <Compile Include="MinecraftYggdrasil.cs" />
+    <Compile Include="Network\NetworkHandler.cs" />
+    <Compile Include="Network\Packets\Server\BDestroyEntitiesPacket.cs" />
+    <Compile Include="Network\Packets\Server\DisconnectPacket.cs" />
+    <Compile Include="Network\Packets\Server\DisplayScoreboardPacket.cs" />
+    <Compile Include="Network\Packets\Server\EffectPacket.cs" />
+    <Compile Include="Network\Packets\Client\EnchantItemPacket.cs" />
+    <Compile Include="Network\Packets\Server\EncryptionKeyRequestPacket.cs" />
+    <Compile Include="Network\Packets\Client\EncryptionKeyResponsePacket.cs" />
+    <Compile Include="Network\Packets\Client\EntityActionPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityEffectPacket.cs" />
+    <Compile Include="Network\Packets\Server\BEntityEquipmentPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityHeadLookPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityLookAndRelativeMovePacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityLookPacket.cs" />
+    <Compile Include="Network\Packets\Server\BEntityMetadataPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityPacket.cs" />
+    <Compile Include="Network\Packets\Server\BEntityPropertiesPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityRelativeMovePacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityStatusPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityTeleportPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityVelocityPacket.cs" />
+    <Compile Include="Network\Packets\Server\ExplosionPacket.cs" />
+    <Compile Include="Network\Packets\Server\HeldItemChangePacket.cs" />
+    <Compile Include="Network\Packets\Client\IncrementStatisticPacket.cs" />
+    <Compile Include="Network\Packets\IPacket.cs" />
+    <Compile Include="Network\Packets\Client\ItemDataPacket.cs" />
+    <Compile Include="Network\Packets\Server\JoinGamePacket.cs" />
+    <Compile Include="Network\Packets\Server\KeepAlivePacket.cs" />
+    <Compile Include="Network\Packets\Server\LoginDisconnectPacket.cs" />
+    <Compile Include="Network\Packets\Client\LoginStartPacket.cs" />
+    <Compile Include="Network\Packets\Server\LoginSuccessPacket.cs" />
+    <Compile Include="Network\Packets\Server\BMapChunkBulkPacket.cs" />
+    <Compile Include="Network\Packets\Server\MapsPacket.cs" />
+    <Compile Include="Network\Packets\Server\BMultiBlockChangePacket.cs" />
+    <Compile Include="Network\Packets\Server\OpenWindowPacket.cs" />
+    <Compile Include="Network\Packets\PacketResponse.cs" />
+    <Compile Include="Enums\Packets.cs" />
+    <Compile Include="Network\Packets\Server\ParticlePacket.cs" />
+    <Compile Include="Network\Packets\Server\PlayerAbilitiesPacket.cs" />
+    <Compile Include="Network\Packets\Client\PlayerDiggingPacket.cs" />
+    <Compile Include="Network\Packets\Server\PlayerListItemPacket.cs" />
+    <Compile Include="Network\Packets\Client\PlayerLookPacket.cs" />
+    <Compile Include="Network\Packets\Client\PlayerPacket.cs" />
+    <Compile Include="Network\Packets\Server\PlayerPositionAndLookPacket.cs" />
+    <Compile Include="Network\Packets\Client\PlayerPositionPacket.cs" />
+    <Compile Include="Network\Packets\Server\PluginMessagePacket.cs" />
+    <Compile Include="Network\Packets\Server\RemoveEntityEffectPacket.cs" />
+    <Compile Include="Network\Packets\Server\RespawnPacket.cs" />
+    <Compile Include="Network\Packets\Server\ResponsePacket.cs" />
+    <Compile Include="Network\Packets\Server\ScoreboardObjectivePacket.cs" />
+    <Compile Include="Network\Packets\Server\PingPacket.cs" />
+    <Compile Include="Network\Packets\Server\SetExperiencePacket.cs" />
+    <Compile Include="Network\Packets\Server\BSetSlotPacket.cs" />
+    <Compile Include="Network\Packets\Server\SignEditorOpenPacket.cs" />
+    <Compile Include="Network\Packets\Server\SoundEffectPacket.cs" />
+    <Compile Include="Network\Packets\Client\SoundOrParticleEffectPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnExperienceOrbPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnGlobalEntityPacket.cs" />
+    <Compile Include="Network\Packets\Server\BSpawnMobPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnObjectPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnPaintingPacket.cs" />
+    <Compile Include="Network\Packets\Server\BSpawnPlayerPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnPositionPacket.cs" />
+    <Compile Include="Network\Packets\Client\SteerVehiclePacket.cs" />
+    <Compile Include="Network\Packets\Server\StatisticsPacket.cs" />
+    <Compile Include="Network\Packets\Server\TabCompletePacket.cs" />
+    <Compile Include="Network\Packets\Server\TimeUpdatePacket.cs" />
+    <Compile Include="Network\Packets\Server\UpdateHealthPacket.cs" />
+    <Compile Include="Network\Packets\Server\UpdateScorePacket.cs" />
+    <Compile Include="Network\Packets\Server\UpdateSignPacket.cs" />
+    <Compile Include="Network\Packets\Server\UseBedPacket.cs" />
+    <Compile Include="Network\Packets\Client\UseEntityPacket.cs" />
+    <Compile Include="Network\Packets\Server\BWindowItemsPacket.cs" />
+    <Compile Include="Network\Packets\Server\WindowPropertyPacket.cs" />
+    <Compile Include="Network\Player.cs" />
+    <Compile Include="TestClient.cs" />
+    <Compile Include="Network\TickHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="CWrapped\CWrapped.csproj">
+      <Project>{72894a03-4a20-4b37-aab9-b96dac4bbaae}</Project>
+      <Name>CWrapped</Name>
+    </ProjectReference>
+    <ProjectReference Include="fNbt\fNbt\fNbt.csproj">
+      <Project>{4488498d-976d-4da3-bf72-109531af0488}</Project>
+      <Name>fNbt</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
