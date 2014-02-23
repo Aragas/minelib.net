@@ -88,7 +88,7 @@ namespace MinecraftClient.Network
 
     public delegate void HeldSlotChangedHandler(byte slot);
 
-    public delegate void SetWindowItemHandler(byte window_ID, short slot, Item item);
+    //public delegate void SetWindowItemHandler(byte window_ID, short slot, Item item);
 
     //public delegate void SetInventoryItemHandler(short slot, Item item);
 

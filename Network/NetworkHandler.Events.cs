@@ -7,7 +7,7 @@ namespace MinecraftClient.Network
     {
         public event PacketHandler OnPacketHandled;
 
-        public void RaisePacketHandled(object sender, IPacket packet, int id, ServerState state)
+        private void RaisePacketHandled(object sender, IPacket packet, int id, ServerState state)
         {
             if (OnPacketHandled != null)
                 OnPacketHandled(sender, packet, id, state);

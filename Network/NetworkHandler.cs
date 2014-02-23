@@ -10,15 +10,15 @@ namespace MinecraftClient.Network
 {
     public partial class NetworkHandler : IDisposable
     {
-        private Thread handler;
-        private Minecraft minecraft;
-        private TcpClient baseSock;
-        private NetworkStream baseStream;
-        public Wrapped stream;
+        private Thread _handler;
+        private Minecraft _minecraft;
+        private TcpClient _baseSock;
+        private NetworkStream _baseStream;
+        private Wrapped _stream;
 
-        public NetworkHandler(Minecraft mc)
+        public NetworkHandler(Minecraft client)
         {
-            minecraft = mc;
+            _minecraft = client;
         }
 
         /// <summary>
@@ -28,20 +28,20 @@ namespace MinecraftClient.Network
         {
             try
             {
-                baseSock = new TcpClient();
-                IAsyncResult AR = baseSock.BeginConnect(minecraft.ServerIP, minecraft.ServerPort, null, null);
+                _baseSock = new TcpClient();
+                IAsyncResult AR = _baseSock.BeginConnect(_minecraft.ServerIP, _minecraft.ServerPort, null, null);
                 WaitHandle wh = AR.AsyncWaitHandle;
 
                 try
                 {
                     if (!AR.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5), false))
                     {
-                        baseSock.Close();
-                        //RaiseSocketError(this, "Failed to connect: Connection Timeout");
+                        _baseSock.Close();
+                        // Failed to connect: Connection Timeout.
                         return;
                     }
 
-                    baseSock.EndConnect(AR);
+                    _baseSock.EndConnect(AR);
                 }
                 finally
                 {
@@ -49,27 +49,22 @@ namespace MinecraftClient.Network
                 }
 
             }
-            catch (Exception e)
-            {
-                //RaiseSocketError(this, "Failed to connect: " + e.Message);
-                return;
-            }
+            catch (Exception e) { return; } // Failed to connect: e.Message.
 
-            minecraft.Running = true;
+            _minecraft.Running = true;
 
-            //RaiseSocketInfo(this, "Connected to server.");
-            //RaiseSocketDebug(this, string.Format("IP: {0} Port: {1}", mainMC.ServerIP, mainMC.ServerPort.ToString()));
+            // Connected to server.
 
             // -- Create our Wrapped socket.
-            baseStream = baseSock.GetStream();
-            stream = new Wrapped(baseStream);
+            _baseStream = _baseSock.GetStream();
+            _stream = new Wrapped(_baseStream);
 
-            //RaiseSocketDebug(this, "Socket Created");
+            // Socket Created
 
             // -- Start network parsing.
-            handler = new Thread(Updater);
-            handler.Start();
-            //RaiseSocketDebug(this, "Handler thread started");
+            _handler = new Thread(Updater);
+            _handler.Start();
+            // Handler thread started.
         }
 
         /// <summary>
@@ -92,18 +87,6 @@ namespace MinecraftClient.Network
             catch (IOException) {}
             catch (SocketException) {}
             catch (ObjectDisposedException) {}
-
-            //do
-            //{
-            //
-            //} while (FindNextPacket());
-
-            //if (!handler.HasBeenKicked)
-            //{
-            //    ConsoleIO.WriteLine("Connection has been lost.");
-            //    if (!handler.OnConnectionLost() && !Program.ReadLineReconnect()) { t_sender.Abort(); }
-            //}
-            //else if (Program.ReadLineReconnect()) { t_sender.Abort(); }
         }
 
         /// <summary>
@@ -113,25 +96,25 @@ namespace MinecraftClient.Network
         {
             try
             {
-                if (baseSock.Client == null || !baseSock.Connected)
+                if (_baseSock.Client == null || !_baseSock.Connected)
                     return false;
 
-                while (baseSock.Client.Available > 0)
+                while (_baseSock.Client.Available > 0)
                 {
                     Console.WriteLine("In While");
 
-                    int length = stream.ReadVarInt();
-                    int packetID = stream.ReadVarInt();
+                    int length = _stream.ReadVarInt();
+                    int packetID = _stream.ReadVarInt();
 
                     Console.WriteLine("ID : 0x" + String.Format("{0:X}", packetID));
                     Console.WriteLine("Lenght: " + length);
 
-                    switch (minecraft.ServerState)
+                    switch (_minecraft.ServerState)
                     {
                         case (int) ServerState.Status:
                             if (ServerResponse.ServerStatusResponse[packetID] == null)
                             {
-                                stream.ReadByteArray(length - 1); // -- bypass the packet
+                                _stream.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
@@ -143,28 +126,28 @@ namespace MinecraftClient.Network
                         case (int) ServerState.Login:
                             if (ServerResponse.ServerLoginResponse[packetID] == null)
                             {
-                                stream.ReadByteArray(length - 1); // -- bypass the packet
+                                _stream.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
                             var packetl = ServerResponse.ServerLoginResponse[packetID]();
-                            packetl.ReadPacket(ref stream);
+                            packetl.ReadPacket(ref _stream);
                             RaisePacketHandled(this, packetl, packetID, ServerState.Login);
 
                             if (packetID == 2)
-                                minecraft.ServerState = 1;
+                                _minecraft.ServerState = 1;
 
                             break;
 
                         case (int) ServerState.Play:
                             if (ServerResponse.ServerPlayResponse[packetID] == null)
                             {
-                                stream.ReadByteArray(length - 1); // -- bypass the packet
+                                _stream.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
                             var packetp = ServerResponse.ServerPlayResponse[packetID]();
-                            packetp.ReadPacket(ref stream);
+                            packetp.ReadPacket(ref _stream);
                             RaisePacketHandled(this, packetp, packetID, ServerState.Play);
 
                             break;
@@ -176,7 +159,7 @@ namespace MinecraftClient.Network
             catch (SocketException e)
             {
                 Console.WriteLine("Error");
-                //Stop();
+                Stop();
                 return false;
             }
             return true;
@@ -184,25 +167,25 @@ namespace MinecraftClient.Network
 
         public void Send(IPacket packet)
         {
-            packet.WritePacket(ref stream);
+            packet.WritePacket(ref _stream);
         }
 
         public void Dispose()
         {
-            if (handler.IsAlive)
-                handler.Abort();
+            if (_handler.IsAlive)
+                _handler.Abort();
 
-            if (baseSock != null)
-                baseSock.Close();
+            if (_baseSock != null)
+                _baseSock.Close();
 
-            if (baseStream != null)
-                baseStream.Dispose();
+            if (_baseStream != null)
+                _baseStream.Dispose();
 
-            if (stream != null)
-                stream.Dispose();
+            if (_stream != null)
+                _stream.Dispose();
 
-            if (minecraft != null)
-                minecraft = null;
+            if (_minecraft != null)
+                _minecraft = null;
         }
     }
 }

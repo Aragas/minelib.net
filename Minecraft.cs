@@ -19,7 +19,7 @@ namespace MinecraftClient
         public bool VerifyNames, Running;
         public NetworkHandler nh;
 
-        //public WorldClass MinecraftWorld; // -- Holds all of the world information. Time, chunks, players, ect.
+        public World World; // -- Holds all of the world information. Time, chunks, ect.
         public ThisPlayer Player;
         public Player ThisPlayer; // -- Holds all user information, location, inventory and so on.
         public Dictionary<string, short> PlayerList;
@@ -65,46 +65,6 @@ namespace MinecraftClient
                 SelectedProfile = "None";
             }
 
-        }
-
-        public bool VerifyName(string accessToken, string selectedProfile, string serverHash)
-        {
-            try
-            {
-                WebClient wClient = new WebClient();
-                wClient.Headers.Add("Content-Type: application/json");
-                string json = "{\"accessToken\": \"" + accessToken + "\",\"selectedProfile\": \"" + selectedProfile +
-                              "\",\"serverId\": \"" + serverHash + "\"}";
-                string result = wClient.UploadString("https://sessionserver.mojang.com/session/minecraft/join", json);
-
-                {
-                    // dunno what to do, can't find answer
-                }
-
-                return true;
-            }
-            catch (WebException) { return false; }
-        }
-
-        public bool VerifySession(string accessToken)
-        {
-            try
-            {
-                WebClient wClient = new WebClient();
-                wClient.Headers.Add("Content-Type: application/json");
-
-                string json = "{\"accessToken\": \"" + accessToken + "\"}";
-                string result = wClient.UploadString("https://authserver.mojang.com/validate", json);
-
-                string[] temp = result.Split(new string[] {"accessToken\":\""},
-                    StringSplitOptions.RemoveEmptyEntries);
-                if (temp.Length >= 2)
-                    accessToken = temp[1].Split('"')[0];
-
-
-                return true;
-            }
-            catch (WebException) { return false; }
         }
 
         /// <summary>
@@ -208,7 +168,7 @@ namespace MinecraftClient
             Running = false;
             ServerState = 0;
 
-            //MinecraftWorld = null;
+            World = null;
             ThisPlayer = null;
             PlayerList = null;
             Entities = null;

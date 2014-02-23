@@ -19,7 +19,6 @@ namespace MinecraftClient
             Client = new Minecraft("TestBot", "", false);
 
             Client.OnPacketHandled += Client_PacketHandled;
-            Client.LoginFailure += (sender, reason) => Console.Write(reason + "1243");
 
             Client.Login();
             Client.RefreshSession();

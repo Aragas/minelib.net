@@ -109,5 +109,45 @@ namespace MinecraftClient
             }
 
         }
+
+        public bool VerifyName(string accessToken, string selectedProfile, string serverHash)
+        {
+            try
+            {
+                WebClient wClient = new WebClient();
+                wClient.Headers.Add("Content-Type: application/json");
+                string json = "{\"accessToken\": \"" + accessToken + "\",\"selectedProfile\": \"" + selectedProfile +
+                              "\",\"serverId\": \"" + serverHash + "\"}";
+                string result = wClient.UploadString("https://sessionserver.mojang.com/session/minecraft/join", json);
+
+                {
+                    // dunno what to do, can't find answer
+                }
+
+                return true;
+            }
+            catch (WebException) { return false; }
+        }
+
+        public bool VerifySession(string accessToken)
+        {
+            try
+            {
+                WebClient wClient = new WebClient();
+                wClient.Headers.Add("Content-Type: application/json");
+
+                string json = "{\"accessToken\": \"" + accessToken + "\"}";
+                string result = wClient.UploadString("https://authserver.mojang.com/validate", json);
+
+                string[] temp = result.Split(new string[] { "accessToken\":\"" },
+                    StringSplitOptions.RemoveEmptyEntries);
+                if (temp.Length >= 2)
+                    accessToken = temp[1].Split('"')[0];
+
+
+                return true;
+            }
+            catch (WebException) { return false; }
+        }
     }
 }

@@ -71,10 +71,8 @@
     <Compile Include="BigData\Entity.cs" />
     <Compile Include="BigData\Object.cs" />
     <Compile Include="BigData\World.cs" />
-    <Compile Include="Data\Block.cs" />
     <Compile Include="Data\EntityProperty.cs" />
     <Compile Include="Data\EntityPropertyListItem.cs" />
-    <Compile Include="Data\Item.cs" />
     <Compile Include="Data\Size.cs" />
     <Compile Include="Data\SlotData.cs" />
     <Compile Include="Data\MetadadaShort.cs" />
