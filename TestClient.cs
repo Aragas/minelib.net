@@ -37,7 +37,7 @@ namespace MinecraftClient
 
             Client.SendPacket(new LoginStartPacket { Name = "TestBot" });
 
-            while (!Client.ready) { }
+            while (!Client.Ready) { }
 
             Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.InitialSpawn} );
             //Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.Respawn });
@@ -47,12 +47,12 @@ namespace MinecraftClient
 
             while (true)
             {
-                
+
             }
             Console.Read();
         }
 
-        private static void Client_PacketHandled(object sender, IPacket packet, int id)
+        private static void Client_PacketHandled(object sender, IPacket packet, int id, ServerState state)
         {
             list.Add(packet);
         }

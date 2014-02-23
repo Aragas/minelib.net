@@ -11,7 +11,7 @@ namespace MinecraftClient.Data
 
         public void ReadSlot(ref Minecraft mc)
         {
-            int blockID = mc.nh.wSock.ReadShort();
+            int blockID = mc.nh.stream.ReadShort();
 
             if (blockID == -1)
             {
@@ -21,16 +21,16 @@ namespace MinecraftClient.Data
                 return;
             }
 
-            itemCount = mc.nh.wSock.ReadByte();
-            itemDamage = mc.nh.wSock.ReadShort();
-            int NBTLength = mc.nh.wSock.ReadShort();
+            itemCount = mc.nh.stream.ReadByte();
+            itemDamage = mc.nh.stream.ReadShort();
+            int NBTLength = mc.nh.stream.ReadShort();
 
             if (NBTLength == -1)
             {
                 return;
             }
 
-            nbtData = mc.nh.wSock.ReadByteArray(NBTLength);
+            nbtData = mc.nh.stream.ReadByteArray(NBTLength);
 
             return;
         }
@@ -45,14 +45,14 @@ namespace MinecraftClient.Data
         {
             if (item == null)
             {
-                mc.nh.wSock.WriteShort(-1);
+                mc.nh.stream.WriteShort(-1);
                 return;
             }
 
-            mc.nh.wSock.WriteShort((short)item.itemID);
-            mc.nh.wSock.WriteByte(item.itemCount);
-            mc.nh.wSock.WriteShort(item.itemDamage);
-            mc.nh.wSock.WriteShort(-1);
+            mc.nh.stream.WriteShort((short)item.itemID);
+            mc.nh.stream.WriteByte(item.itemCount);
+            mc.nh.stream.WriteShort(item.itemDamage);
+            mc.nh.stream.WriteShort(-1);
         }
     }
 }

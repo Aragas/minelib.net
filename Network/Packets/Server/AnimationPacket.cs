@@ -6,7 +6,7 @@ namespace MinecraftClient.Network.Packets.Server
     public struct AnimationPacket : IPacket
     {
         public int EntityID;
-        public EntityAnimation Animation;
+        public Animation Animation;
 
         public const byte PacketId = 0x0B;
         public byte Id { get { return 0x0B; } }
@@ -14,7 +14,7 @@ namespace MinecraftClient.Network.Packets.Server
         public void ReadPacket(ref Wrapped stream)
         {
             EntityID = stream.ReadVarInt();
-            Animation = (EntityAnimation)stream.ReadByte();
+            Animation = (Animation)stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)

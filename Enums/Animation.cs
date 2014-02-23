@@ -1,6 +1,6 @@
 ﻿namespace MinecraftClient.Enums
 {
-    public enum EntityAnimation
+    public enum Animation
     {
         NoAnimation         = 0,
         SwingArm            = 1,

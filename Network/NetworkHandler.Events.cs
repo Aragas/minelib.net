@@ -1,4 +1,5 @@
-﻿using MinecraftClient.Network.Packets;
+﻿using MinecraftClient.Enums;
+using MinecraftClient.Network.Packets;
 
 namespace MinecraftClient.Network
 {
@@ -6,10 +7,10 @@ namespace MinecraftClient.Network
     {
         public event PacketHandler OnPacketHandled;
 
-        public void RaisePacketHandled(object sender, IPacket packet, int id)
+        public void RaisePacketHandled(object sender, IPacket packet, int id, ServerState state)
         {
             if (OnPacketHandled != null)
-                OnPacketHandled(sender, packet, id);
+                OnPacketHandled(sender, packet, id, state);
         }
     }
 }

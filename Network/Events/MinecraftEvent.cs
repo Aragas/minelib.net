@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using MinecraftClient.Data;
+using MinecraftClient.Enums;
 using MinecraftClient.Network.Packets;
 
 namespace MinecraftClient.Network
@@ -15,7 +16,7 @@ namespace MinecraftClient.Network
 
     public delegate void MessageHandler(object sender, string message, string name);
 
-    public delegate void PacketHandler(object sender, IPacket packet, int id);
+    public delegate void PacketHandler(object sender, IPacket packet, int id, ServerState state);
 
     #endregion
 
@@ -372,10 +373,10 @@ namespace MinecraftClient.Network
                 ErrorMessage(Sender, "(NETWORK): " + Message);
         }
 
-        void RaisePacketHandled(object Sender, IPacket Packet, int id)
+        void RaisePacketHandled(object Sender, IPacket Packet, int id, ServerState state)
         {
             if (PacketHandled != null)
-                PacketHandled(Sender, Packet, id);
+                PacketHandled(Sender, Packet, id, state);
         }
 
         void RaiseError(object Sender, string Message)

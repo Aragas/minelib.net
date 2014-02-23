@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using MinecraftClient.BigData;
 using MinecraftClient.Enums;
 using MinecraftClient.Network;
 using MinecraftClient.Network.Packets;
-
-// [Low]: Refactor packets to be universal for Server/Client, and be usable with proxies
 using MinecraftClient.Network.Packets.Server;
 
 namespace MinecraftClient
 {
     /// <summary>
-    /// Main class for libMC.Net, a Minecraft interaction library for .net languages.
+    /// Wrapper for Network of MineLib.Net.
     /// </summary>
-    public partial class Minecraft
+    public partial class Minecraft : IDisposable
     {
-        #region Variables
         public string ServerIP, ClientName, ClientPassword, AccessToken, ClientToken, SelectedProfile, ClientBrand;
         public int ServerPort, ServerState;
         public bool VerifyNames, Running;
         public NetworkHandler nh;
 
-        #region Trackers
         //public WorldClass MinecraftWorld; // -- Holds all of the world information. Time, chunks, players, ect.
+        public ThisPlayer Player;
         public Player ThisPlayer; // -- Holds all user information, location, inventory and so on.
-        public Dictionary<string, short> Players;
-        #endregion
-        #endregion
+        public Dictionary<string, short> PlayerList;
+        public Dictionary<int, Entity> Entities;
 
         /// <summary>
         /// Create a new Minecraft Instance
@@ -49,7 +46,8 @@ namespace MinecraftClient
         {
             if (VerifyNames)
             {
-                YggdrasilStatus result = LoginAuthServer(ref ClientName, ClientPassword, ref AccessToken, ref ClientToken, ref SelectedProfile);
+                YggdrasilStatus result = LoginAuthServer(ref ClientName, ClientPassword, ref AccessToken,
+                    ref ClientToken, ref SelectedProfile);
 
                 switch (result)
                 {
@@ -86,7 +84,6 @@ namespace MinecraftClient
                 return true;
             }
             catch (WebException) { return false; }
-
         }
 
         public bool VerifySession(string accessToken)
@@ -103,7 +100,7 @@ namespace MinecraftClient
                     StringSplitOptions.RemoveEmptyEntries);
                 if (temp.Length >= 2)
                     accessToken = temp[1].Split('"')[0];
-                
+
 
                 return true;
             }
@@ -117,7 +114,7 @@ namespace MinecraftClient
         {
             if (AccessToken == null || ClientToken == null)
                 return false;
-            
+
 
             YggdrasilStatus result = RefreshSession(ref AccessToken, ref ClientToken);
 
@@ -129,7 +126,6 @@ namespace MinecraftClient
                 default:
                     return false;
             }
-
         }
 
         /// <summary>
@@ -144,7 +140,7 @@ namespace MinecraftClient
 
             if (AccessToken == null || ClientToken == null)
                 return false;
-            
+
 
             YggdrasilStatus result = RefreshSession(ref AccessToken, ref ClientToken);
 
@@ -156,7 +152,6 @@ namespace MinecraftClient
                 default:
                     return false;
             }
-
         }
 
         /// <summary>
@@ -172,7 +167,9 @@ namespace MinecraftClient
             if (nh != null)
                 Disconnect();
 
-            Players = new Dictionary<string, short>();
+            Player = new ThisPlayer();
+            PlayerList = new Dictionary<string, short>();
+            Entities = new Dictionary<int, Entity>(); 
 
             nh = new NetworkHandler(this);
 
@@ -195,7 +192,7 @@ namespace MinecraftClient
 
         public void SendChatMessage(string message)
         {
-            nh.Send(new ChatMessagePacket {Message = message} );
+            nh.Send(new ChatMessagePacket {Message = message});
         }
 
         /// <summary>
@@ -210,11 +207,16 @@ namespace MinecraftClient
 
             Running = false;
             ServerState = 0;
-            nh = null;
+
             //MinecraftWorld = null;
-            //ThisPlayer = null;
-            Players = null;
+            ThisPlayer = null;
+            PlayerList = null;
+            Entities = null;
         }
 
+        public void Dispose()
+        {
+            Disconnect();
+        }
     }
 }

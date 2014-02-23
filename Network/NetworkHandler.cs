@@ -5,26 +5,20 @@ using System.Threading;
 using CWrapped;
 ﻿using MinecraftClient.Enums;
 ﻿using MinecraftClient.Network.Packets;
-﻿using MinecraftClient.Network.Packets.Client;
 
 namespace MinecraftClient.Network
 {
     public partial class NetworkHandler : IDisposable
     {
-        #region Variables
-
-        Thread handler;
-        Minecraft mainMC;
-        TcpClient baseSock;
-        NetworkStream baseStream;
-        public Wrapped wSock;
-        public TickHandler WorldTick;
-
-        #endregion
+        private Thread handler;
+        private Minecraft minecraft;
+        private TcpClient baseSock;
+        private NetworkStream baseStream;
+        public Wrapped stream;
 
         public NetworkHandler(Minecraft mc)
         {
-            mainMC = mc;
+            minecraft = mc;
         }
 
         /// <summary>
@@ -35,7 +29,7 @@ namespace MinecraftClient.Network
             try
             {
                 baseSock = new TcpClient();
-                IAsyncResult AR = baseSock.BeginConnect(mainMC.ServerIP, mainMC.ServerPort, null, null);
+                IAsyncResult AR = baseSock.BeginConnect(minecraft.ServerIP, minecraft.ServerPort, null, null);
                 WaitHandle wh = AR.AsyncWaitHandle;
 
                 try
@@ -61,14 +55,14 @@ namespace MinecraftClient.Network
                 return;
             }
 
-            mainMC.Running = true;
+            minecraft.Running = true;
 
             //RaiseSocketInfo(this, "Connected to server.");
             //RaiseSocketDebug(this, string.Format("IP: {0} Port: {1}", mainMC.ServerIP, mainMC.ServerPort.ToString()));
 
             // -- Create our Wrapped socket.
             baseStream = baseSock.GetStream();
-            wSock = new Wrapped(baseStream);
+            stream = new Wrapped(baseStream);
 
             //RaiseSocketDebug(this, "Socket Created");
 
@@ -95,9 +89,9 @@ namespace MinecraftClient.Network
                     Thread.Sleep(100);
                 } while (PacketHandler());
             }
-            catch (IOException) { }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
+            catch (IOException) {}
+            catch (SocketException) {}
+            catch (ObjectDisposedException) {}
 
             //do
             //{
@@ -115,70 +109,67 @@ namespace MinecraftClient.Network
         /// <summary>
         /// Creates an instance of each new packet, so it can be parsed.
         /// </summary>
-        bool PacketHandler()
+        private bool PacketHandler()
         {
             try
             {
                 if (baseSock.Client == null || !baseSock.Connected)
                     return false;
-                
+
                 while (baseSock.Client.Available > 0)
                 {
                     Console.WriteLine("In While");
 
-                    int length = wSock.ReadVarInt();
-                    Console.WriteLine("Lenght: " + length);
-                    int packetID = wSock.ReadVarInt();
+                    int length = stream.ReadVarInt();
+                    int packetID = stream.ReadVarInt();
 
                     Console.WriteLine("ID : 0x" + String.Format("{0:X}", packetID));
+                    Console.WriteLine("Lenght: " + length);
 
-                    switch (mainMC.ServerState)
+                    switch (minecraft.ServerState)
                     {
                         case (int) ServerState.Status:
                             if (ServerResponse.ServerStatusResponse[packetID] == null)
                             {
-                                wSock.ReadByteArray(length - 1); // -- bypass the packet
+                                stream.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
                             var packets = ServerResponse.ServerStatusResponse[packetID]();
-                            RaisePacketHandled(this, packets, packetID);
+                            RaisePacketHandled(this, packets, packetID, ServerState.Status);
 
                             break;
 
                         case (int) ServerState.Login:
                             if (ServerResponse.ServerLoginResponse[packetID] == null)
                             {
-                                wSock.ReadByteArray(length - 1); // -- bypass the packet
+                                stream.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
                             var packetl = ServerResponse.ServerLoginResponse[packetID]();
-                            packetl.ReadPacket(ref wSock);
-                            RaisePacketHandled(this, packetl, packetID);
+                            packetl.ReadPacket(ref stream);
+                            RaisePacketHandled(this, packetl, packetID, ServerState.Login);
 
                             if (packetID == 2)
-                                mainMC.ServerState = 1;
+                                minecraft.ServerState = 1;
 
                             break;
 
                         case (int) ServerState.Play:
                             if (ServerResponse.ServerPlayResponse[packetID] == null)
                             {
-                                wSock.ReadByteArray(length - 1); // -- bypass the packet
+                                stream.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
                             var packetp = ServerResponse.ServerPlayResponse[packetID]();
-                            packetp.ReadPacket(ref wSock);
-                            RaisePacketHandled(this, packetp, packetID);
+                            packetp.ReadPacket(ref stream);
+                            RaisePacketHandled(this, packetp, packetID, ServerState.Play);
 
                             break;
                     }
-                    //Send(new PlayerPacket {OnGround = true});
-                    //if (WorldTick != null)
-                    //    WorldTick.DoTick();
-                    Console.WriteLine("Ololo");
+                    Console.WriteLine("Out While");
                     Console.WriteLine(" ");
                 }
             }
@@ -191,86 +182,9 @@ namespace MinecraftClient.Network
             return true;
         }
 
-        bool FindNextPacket()
-        {
-            try
-            {
-                if (baseSock.Client == null || !baseSock.Connected) { return false; }
-                while (baseSock.Client.Available > 0)
-                {
-                    Console.WriteLine("In While");
-
-                    int length = wSock.ReadVarInt();
-                    Console.WriteLine("Got Lenght");
-                    int packetID = wSock.ReadVarInt();
-
-                    Console.WriteLine("ID: " + packetID);
-
-                    switch (mainMC.ServerState)
-                    {
-                        case (int)ServerState.Status:
-                            if (ServerResponse.ServerStatusResponse[packetID] == null)
-                            {
-                                wSock.ReadByteArray(length - 1); // -- bypass the packet
-                                continue;
-                            }
-
-                            var packets = ServerResponse.ServerStatusResponse[packetID]();
-                            RaisePacketHandled(this, packets, packetID);
-
-                            break;
-
-                        case (int)ServerState.Login:
-                            if (ServerResponse.ServerLoginResponse[packetID] == null)
-                            {
-                                wSock.ReadByteArray(length - 1); // -- bypass the packet
-                                continue;
-                            }
-
-                            var packetl = ServerResponse.ServerLoginResponse[packetID]();
-                            packetl.ReadPacket(ref wSock);
-                            RaisePacketHandled(this, packetl, packetID);
-
-                            if (packetID == 2)
-                                mainMC.ServerState = 1;
-
-                            break;
-
-                        case (int)ServerState.Play:
-                            if (ServerResponse.ServerPlayResponse[packetID] == null)
-                            {
-                                wSock.ReadByteArray(length - 1); // -- bypass the packet
-                                continue;
-                            }
-
-                            var packetp = ServerResponse.ServerPlayResponse[packetID]();
-                            packetp.ReadPacket(ref wSock);
-                            RaisePacketHandled(this, packetp, packetID);
-
-                            break;
-                    }
-                    //Send(new PlayerPacket {OnGround = true});
-                    //if (WorldTick != null)
-                    //    WorldTick.DoTick();
-                    Console.WriteLine("Ololo");
-                }
-                Console.Write("Shit");
-            }
-            catch (Exception e)
-            {
-                if (e.GetType() != typeof(ThreadAbortException))
-                {
-                    Console.WriteLine("Error");
-                    Stop();
-                    return false;
-                }
-            }
-            return true;
-        }
-
         public void Send(IPacket packet)
         {
-            packet.WritePacket(ref wSock);
+            packet.WritePacket(ref stream);
         }
 
         public void Dispose()
@@ -284,11 +198,11 @@ namespace MinecraftClient.Network
             if (baseStream != null)
                 baseStream.Dispose();
 
-            if (wSock != null)
-                wSock.Dispose();
+            if (stream != null)
+                stream.Dispose();
 
-            if (mainMC != null)
-                mainMC = null;
+            if (minecraft != null)
+                minecraft = null;
         }
     }
 }

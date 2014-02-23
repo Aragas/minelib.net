@@ -68,6 +68,9 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigData\Entity.cs" />
+    <Compile Include="BigData\Object.cs" />
+    <Compile Include="BigData\World.cs" />
     <Compile Include="Data\Block.cs" />
     <Compile Include="Data\EntityProperty.cs" />
     <Compile Include="Data\EntityPropertyListItem.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Enums\ServerState.cs" />
     <Compile Include="Enums\TeamMode.cs" />
     <Compile Include="Enums\YggdrasilStatus.cs" />
+    <Compile Include="Minecraft.Client.cs" />
     <Compile Include="Network\Packets\Server\AnimationPacket.cs" />
     <Compile Include="Network\Packets\Server\AttachEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\BlockActionPacket.cs" />
@@ -122,7 +126,7 @@
     <Compile Include="Network\Packets\Server\HandshakePacket.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Network\Events\IPacketEventArgs.cs" />
+    <Compile Include="BigData\ThisPlayer.cs" />
     <Compile Include="Network\Events\MinecraftEvent.cs" />
     <Compile Include="Minecraft.cs" />
     <Compile Include="Minecraft.Events.cs" />
@@ -203,7 +207,6 @@
     <Compile Include="Network\Packets\Server\WindowPropertyPacket.cs" />
     <Compile Include="Data\Player.cs" />
     <Compile Include="TestClient.cs" />
-    <Compile Include="Network\TickHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

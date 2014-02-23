@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using MinecraftClient.BigData;
 using MinecraftClient.Enums;
 using MinecraftClient.Network;
 using MinecraftClient.Network.Packets;
@@ -8,26 +10,250 @@ namespace MinecraftClient
 {
     public partial class Minecraft
     {
-        public bool ready;
+        public bool Ready;
 
         public event PacketHandler OnPacketHandled;
 
-        void RaisePacketHandled(object sender, IPacket packet, int id)
+        void RaisePacketHandled(object sender, IPacket packet, int id, ServerState state)
         {
-            ready = true;
-            switch ((Packet)id)
-            {
-                case Packet.KeepAlive:
-                    KeepAlivePacket p = (KeepAlivePacket)packet;
-                    Console.WriteLine(p.KeepAlive);
-                    SendPacket(packet);
-                    break;
+            Ready = true;
 
-                default:
-                    if (OnPacketHandled != null)
-                        OnPacketHandled(sender, packet, id);
+            switch (state)
+            {
+                case Enums.ServerState.Play:
+                    switch ((PacketServer) id)
+                    {
+                        case PacketServer.KeepAlive:
+                            KeepAlivePacket KeepAlive = (KeepAlivePacket) packet;
+                            Console.WriteLine(KeepAlive.KeepAlive);
+                            SendPacket(packet);
+                            break;
+
+                        case PacketServer.ChatMessage:
+                            ChatMessagePacket ChatMessage = (ChatMessagePacket) packet;
+                            Console.WriteLine(ChatMessage.Message);
+                            break;
+
+                        case PacketServer.JoinGame:
+                            JoinGamePacket JoinGame = (JoinGamePacket)packet;
+                            Player.EntityID = JoinGame.EntityID;
+                            break;
+
+                        case PacketServer.TimeUpdate:
+                            TimeUpdatePacket TimeUpdatet = (TimeUpdatePacket)packet;
+                            if (Ready)
+                                SendPacket(Player.Packet());
+                            break;
+
+                        #region Player part
+                        case  PacketServer.PlayerListItem:
+                            PlayerListItemPacket PlayerListItem = (PlayerListItemPacket)packet;
+
+                            if (!PlayerList.ContainsKey(PlayerListItem.PlayerName))
+                                PlayerList.Add(PlayerListItem.PlayerName, PlayerListItem.Ping);
+                            break;
+
+                        case PacketServer.SoundEffect:
+                            SoundEffectPacket SoundEffect = (SoundEffectPacket)packet;
+                            PlaySound(SoundEffect.SoundName, SoundEffect.X, SoundEffect.Y, 
+                                SoundEffect.Z, SoundEffect.Volume, SoundEffect.Pitch);
+                            break;
+
+                        case PacketServer.Effect:
+                            EffectPacket Effect = (EffectPacket)packet;
+                            PlayEffect(Effect.EffectID, Effect.X, Effect.Y, Effect.Z, 
+                                Effect.Data, Effect.DisableRelativeVolume);
+                            break;
+
+                        case PacketServer.SpawnPosition:
+                            SpawnPositionPacket SpawnPosition = (SpawnPositionPacket)packet;
+                            Player.SpawnPosition.X = SpawnPosition.X;
+                            Player.SpawnPosition.Y = SpawnPosition.Y;
+                            Player.SpawnPosition.Z = SpawnPosition.Z;
+                            break;
+
+                        case PacketServer.UpdateHealth:
+                            UpdateHealthPacket UpdateHealth = (UpdateHealthPacket)packet;
+                            Player.Health.Food = UpdateHealth.Food;
+                            Player.Health.FoodSaturation = UpdateHealth.FoodSaturation;
+                            Player.Health.Health = UpdateHealth.Health;
+                            break;
+
+                        case PacketServer.Respawn:
+                            RespawnPacket Respawn = (RespawnPacket)packet;
+                            break;
+
+                        case PacketServer.PlayerPositionAndLook:
+                            PlayerPositionAndLookPacket PlayerPositionAndLook = (PlayerPositionAndLookPacket)packet;
+                            if (!Player.Position.Initialized)
+                            {
+                                Player.Position.X = (int)PlayerPositionAndLook.X;
+                                Player.Position.Y = (int)PlayerPositionAndLook.Y;
+                                Player.Position.Z = (int)PlayerPositionAndLook.Z;
+                                Player.Position.OnGround = PlayerPositionAndLook.OnGround;
+                                Player.Look.Yaw = PlayerPositionAndLook.Yaw;
+                                Player.Look.Pitch = PlayerPositionAndLook.Pitch;
+                            }
+                            else
+                            {
+                                // Change smoothly the last data to new data.
+                            }
+                            break;
+
+                        case PacketServer.HeldItemChange:
+                            HeldItemChangePacket HeldItemChange = (HeldItemChangePacket)packet;
+                            Player.HeldItem.Slot = HeldItemChange.Slot;
+                            break;
+
+                        case PacketServer.SetExperience:
+                            SetExperiencePacket SetExperience = (SetExperiencePacket)packet;
+                            Player.Experience.ExperienceBar = SetExperience.ExperienceBar;
+                            Player.Experience.Level = SetExperience.Level;
+                            Player.Experience.TotalExperience = SetExperience.TotalExperience;
+                            break;
+
+                        case PacketServer.PlayerAbilities:
+                            PlayerAbilitiesPacket PlayerAbilities = (PlayerAbilitiesPacket)packet;
+                            Player.Abilities.Flags = PlayerAbilities.Flags;
+                            Player.Abilities.FlyingSpeed = PlayerAbilities.FlyingSpeed;
+                            Player.Abilities.WalkingSpeed = PlayerAbilities.WalkingSpeed;
+                            break;
+
+                        case PacketServer.Statistics:
+                            StatisticsPacket Statistics = (StatisticsPacket)packet;
+                            Player.Statistics.Count = Statistics.Count;
+                            Player.Statistics.StatisticsName = Statistics.StatisticsName;
+                            Player.Statistics.Value = Statistics.Value;
+                            break;
+
+                        //case PacketServer.WindowItems:
+                        //    WindowItemsPacket WindowItems = (WindowItemsPacket)packet;
+                        //    Player.Items.WindowId = WindowItems.WindowId;
+                        //    Player.Items.SlotData = WindowItems.SlotData;
+                        //    break;
+
+                        case PacketServer.WindowProperty:
+                            WindowPropertyPacket WindowProperty = (WindowPropertyPacket)packet;     
+                            break;
+
+                        case PacketServer.WindowItems:
+                            WindowItemsPacket WindowItems = (WindowItemsPacket)packet;
+                            Player.WindowItems(WindowItems.WindowId, WindowItems.SlotData);
+                            break;
+
+                        case PacketServer.SetSlot:
+                            SetSlotPacket SetSlot = (SetSlotPacket)packet;
+                            Player.SetSlot(SetSlot.WindowId, SetSlot.Slot, SetSlot.SlotData);
+                            break;
+
+                        #endregion
+
+                        case PacketServer.SpawnObject:
+                            SpawnObjectPacket SpawnObject = (SpawnObjectPacket)packet;
+                            break;
+
+                        #region Entity part
+                            //
+                        case PacketServer.Entity:
+                            EntityPacket Entity = (EntityPacket)packet;
+                            if (!Entities.ContainsKey(Entity.EntityID))
+                                Entities.Add(Entity.EntityID, new Entity { EntityID = Entity.EntityID });
+                            break;
+                            //
+                        case PacketServer.EntityStatus:
+                            EntityStatusPacket EntityStatus = (EntityStatusPacket)packet;
+                            if (!Entities.ContainsKey(EntityStatus.EntityID))
+                                Entities.Add(EntityStatus.EntityID, new Entity { EntityID = EntityStatus.EntityID });
+
+                            Entities[EntityStatus.EntityID].Status = EntityStatus.Status;
+                            break;
+                            //
+                        case PacketServer.DestroyEntities:
+                            DestroyEntitiesPacket DestroyEntities = (DestroyEntitiesPacket)packet;                         
+                            foreach (var t in DestroyEntities.EntityIDs)
+                            {
+                                Entities.Remove(t);
+                            }
+                            break;
+                            //
+                        // For player too!
+                        case PacketServer.EntityEffect:
+                            EntityEffectPacket EntityEffect = (EntityEffectPacket) packet;
+                            if (Player.EntityID == EntityEffect.EntityID)
+                            {
+                                Player.Effects.Add(new PlayerEffect
+                                {
+                                    EffectID = EntityEffect.EffectID,
+                                    Amplifier = EntityEffect.Amplifier,
+                                    Duration = EntityEffect.Duration
+                                });
+                            }
+                            else
+                            {
+                                if (!Entities.ContainsKey(EntityEffect.EntityID))
+                                    Entities.Add(EntityEffect.EntityID, new Entity { EntityID = EntityEffect.EntityID });
+
+                                Entities[EntityEffect.EntityID].Effects.Add(new EntityEffect
+                                {
+                                    EffectID = EntityEffect.EffectID,
+                                    Amplifier = EntityEffect.Amplifier,
+                                    Duration = EntityEffect.Duration
+                                });
+                            }
+                            break;
+
+                        case PacketServer.EntityTeleport:
+                            EntityTeleportPacket EntityTeleport = (EntityTeleportPacket)packet;
+                            break;
+                            //
+                        case PacketServer.EntityHeadLook:
+                            EntityHeadLookPacket EntityHeadLook = (EntityHeadLookPacket)packet;
+                            if (!Entities.ContainsKey(EntityHeadLook.EntityID))
+                                Entities.Add(EntityHeadLook.EntityID, new Entity { EntityID = EntityHeadLook.EntityID });
+
+                            Entities[EntityHeadLook.EntityID].Look.Yaw = EntityHeadLook.HeadYaw;
+                            break;
+                            //
+                        case PacketServer.EntityLook:
+                            EntityLookPacket EntityLook = (EntityLookPacket)packet;
+                            if (!Entities.ContainsKey(EntityLook.EntityID))
+                                Entities.Add(EntityLook.EntityID, new Entity { EntityID = EntityLook.EntityID });
+
+                            Entities[EntityLook.EntityID].Look.Yaw = EntityLook.Yaw;
+                            Entities[EntityLook.EntityID].Look.Pitch = EntityLook.Pitch;
+                            break;
+                            //
+                        case PacketServer.EntityEquipment:
+                            EntityEquipmentPacket EntityEquipment = (EntityEquipmentPacket)packet;
+                            if (!Entities.ContainsKey(EntityEquipment.EntityID))
+                                Entities.Add(EntityEquipment.EntityID, new Entity { EntityID = EntityEquipment.EntityID });
+
+                            Entities[EntityEquipment.EntityID].Equipment.Item = EntityEquipment.Item;
+                            Entities[EntityEquipment.EntityID].Equipment.Slot = EntityEquipment.Slot;
+                            break;
+
+                        case PacketServer.EntityLookAndRelativeMove:
+                            EntityLookAndRelativeMovePacket EntityLookAndRelativeMove = (EntityLookAndRelativeMovePacket)packet;
+                            break;
+
+                        case PacketServer.EntityVelocity:
+                            EntityVelocityPacket EntityVelocity = (EntityVelocityPacket)packet;
+                            break;
+
+                        case PacketServer.EntityRelativeMove:
+                            EntityRelativeMovePacket EntityRelativeMove = (EntityRelativeMovePacket) packet;
+                            break;
+
+                        #endregion
+
+                        default:
+                            if (OnPacketHandled != null)
+                                OnPacketHandled(sender, packet, id, state);
+                            break;
+                    }
                     break;
             }
+            
         }
 
 

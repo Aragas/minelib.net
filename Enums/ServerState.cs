@@ -1,6 +1,6 @@
 ﻿namespace MinecraftClient.Enums
 {
-    enum ServerState
+    public enum ServerState
     {
         Login = 0,
         Play = 1,

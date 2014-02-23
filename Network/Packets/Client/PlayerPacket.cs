@@ -6,8 +6,8 @@ namespace MinecraftClient.Network.Packets.Client
     {
         public bool OnGround;
 
-        public const byte PacketId = 0x0A;
-        public byte Id { get { return 0x0A; } }
+        public const byte PacketId = 0x03;
+        public byte Id { get { return 0x03; } }
 
         public void ReadPacket(ref Wrapped stream)
         {
