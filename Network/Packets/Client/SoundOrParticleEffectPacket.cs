@@ -16,23 +16,23 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            X = stream.readShort();
-            Y = stream.readByte();
-            Z = stream.readShort();
-            Data = stream.readShort();
-            DisableRelativeVolume = stream.readBool();
+            EntityID = stream.ReadShort();
+            X = stream.ReadShort();
+            Y = stream.ReadByte();
+            Z = stream.ReadShort();
+            Data = stream.ReadShort();
+            DisableRelativeVolume = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeVarInt(X);
-            stream.writeVarInt(Y);
-            stream.writeVarInt(Z);
-            stream.writeVarInt(Data);
-            stream.writeBool(DisableRelativeVolume);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteVarInt(X);
+            stream.WriteVarInt(Y);
+            stream.WriteVarInt(Z);
+            stream.WriteVarInt(Data);
+            stream.WriteBool(DisableRelativeVolume);
             stream.Purge();
         }
     }

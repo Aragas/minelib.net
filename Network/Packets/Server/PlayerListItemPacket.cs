@@ -13,17 +13,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            PlayerName = stream.readString();
-            Online = stream.readBool();
-            Ping = stream.readShort();
+            PlayerName = stream.ReadString();
+            Online = stream.ReadBool();
+            Ping = stream.ReadShort();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeString(PlayerName);
-            stream.writeBool(Online);
-            stream.writeShort(Ping);
+            stream.WriteVarInt(Id);
+            stream.WriteString(PlayerName);
+            stream.WriteBool(Online);
+            stream.WriteShort(Ping);
             stream.Purge();
         }
     }

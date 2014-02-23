@@ -15,29 +15,29 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            X = stream.readDouble();
-            Y = stream.readDouble();
-            Z = stream.readDouble();
-            Radius = stream.readFloat();
-            RecordCount = stream.readInt();
-            Records = stream.readByteArray(RecordCount * 3);
-            PlayerMotionX = stream.readFloat();
-            PlayerMotionY = stream.readFloat();
-            PlayerMotionZ = stream.readFloat();
+            X = stream.ReadDouble();
+            Y = stream.ReadDouble();
+            Z = stream.ReadDouble();
+            Radius = stream.ReadFloat();
+            RecordCount = stream.ReadInt();
+            Records = stream.ReadByteArray(RecordCount * 3);
+            PlayerMotionX = stream.ReadFloat();
+            PlayerMotionY = stream.ReadFloat();
+            PlayerMotionZ = stream.ReadFloat();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeDouble(X);
-            stream.writeDouble(Y);
-            stream.writeDouble(Z);
-            stream.writeFloat(Radius);
-            stream.writeInt(RecordCount);
-            stream.writeByteArray(Records);
-            stream.writeFloat(PlayerMotionX);
-            stream.writeFloat(PlayerMotionY);
-            stream.writeFloat(PlayerMotionZ);
+            stream.WriteVarInt(Id);
+            stream.WriteDouble(X);
+            stream.WriteDouble(Y);
+            stream.WriteDouble(Z);
+            stream.WriteFloat(Radius);
+            stream.WriteInt(RecordCount);
+            stream.WriteByteArray(Records);
+            stream.WriteFloat(PlayerMotionX);
+            stream.WriteFloat(PlayerMotionY);
+            stream.WriteFloat(PlayerMotionZ);
             stream.Purge();
         }
     }

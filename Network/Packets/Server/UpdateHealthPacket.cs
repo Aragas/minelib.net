@@ -13,17 +13,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Health = stream.readFloat();
-            Food = stream.readShort();
-            FoodSaturation = stream.readFloat();
+            Health = stream.ReadFloat();
+            Food = stream.ReadShort();
+            FoodSaturation = stream.ReadFloat();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeFloat(Health);
-            stream.writeShort(Food);
-            stream.writeFloat(FoodSaturation);
+            stream.WriteVarInt(Id);
+            stream.WriteFloat(Health);
+            stream.WriteShort(Food);
+            stream.WriteFloat(FoodSaturation);
             stream.Purge();
         }
     }

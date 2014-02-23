@@ -15,17 +15,17 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            Slot = (EntityEquipmentSlot)stream.readShort();
-            //Item = ItemStack.FromStream(stream);
+            EntityID = stream.ReadInt();
+            Slot = (EntityEquipmentSlot)stream.ReadShort();
+            Item = ItemStack.FromStream(ref stream);
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeShort((short)Slot);
-            //Item.WriteTo(stream);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteShort((short)Slot);
+            Item.WriteTo(ref stream);
             stream.Purge();
         }
     }

@@ -12,17 +12,17 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Yaw = stream.readFloat();
-            Pitch = stream.readFloat();
-            OnGround = stream.readBool();
+            Yaw = stream.ReadFloat();
+            Pitch = stream.ReadFloat();
+            OnGround = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeFloat(Yaw);
-            stream.writeFloat(Pitch);
-            stream.writeBool(OnGround);
+            stream.WriteVarInt(Id);
+            stream.WriteFloat(Yaw);
+            stream.WriteFloat(Pitch);
+            stream.WriteBool(OnGround);
             stream.Purge();
         }
     }

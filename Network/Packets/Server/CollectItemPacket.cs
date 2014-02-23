@@ -12,15 +12,15 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            CollectedEntityID = stream.readInt();
-            CollectorEntityID = stream.readInt();
+            CollectedEntityID = stream.ReadInt();
+            CollectorEntityID = stream.ReadInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(CollectedEntityID);
-            stream.writeInt(CollectorEntityID);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(CollectedEntityID);
+            stream.WriteInt(CollectorEntityID);
             stream.Purge();
         }
     }

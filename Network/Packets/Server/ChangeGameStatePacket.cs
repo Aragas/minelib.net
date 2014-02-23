@@ -13,15 +13,15 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            Reason = (GameState)stream.readByte();
-            Value = stream.readFloat();
+            Reason = (GameState)stream.ReadByte();
+            Value = stream.ReadFloat();
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeByte((byte)Reason);
-            stream.writeFloat(Value);
+            stream.WriteVarInt(Id);
+            stream.WriteByte((byte)Reason);
+            stream.WriteFloat(Value);
             stream.Purge();
         }
     }

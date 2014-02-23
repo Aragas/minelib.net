@@ -12,21 +12,21 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            X = stream.readDouble();
-            Y = stream.readDouble();
-            Stance = stream.readDouble();
-            Z = stream.readDouble();
-            OnGround = stream.readBool();
+            X = stream.ReadDouble();
+            Y = stream.ReadDouble();
+            Stance = stream.ReadDouble();
+            Z = stream.ReadDouble();
+            OnGround = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeDouble(X);
-            stream.writeDouble(Y);
-            stream.writeDouble(Stance);
-            stream.writeDouble(Z);
-            stream.writeBool(OnGround);
+            stream.WriteVarInt(Id);
+            stream.WriteDouble(X);
+            stream.WriteDouble(Y);
+            stream.WriteDouble(Stance);
+            stream.WriteDouble(Z);
+            stream.WriteBool(OnGround);
             stream.Purge();
         }
     }

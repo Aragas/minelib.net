@@ -11,15 +11,15 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            UUID = stream.readString();
-            Username = stream.readString();
+            UUID = stream.ReadString();
+            Username = stream.ReadString();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeString(UUID);
-            stream.writeString(Username);
+            stream.WriteVarInt(Id);
+            stream.WriteString(UUID);
+            stream.WriteString(Username);
             stream.Purge();
         }
     }

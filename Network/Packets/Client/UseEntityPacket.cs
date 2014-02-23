@@ -12,17 +12,17 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            User = stream.readShort();
-            Target = stream.readShort();
-            LeftClick = stream.readBool();
+            User = stream.ReadShort();
+            Target = stream.ReadShort();
+            LeftClick = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(User);
-            stream.writeVarInt(Target);
-            stream.writeBool(LeftClick);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(User);
+            stream.WriteVarInt(Target);
+            stream.WriteBool(LeftClick);
             stream.Purge();
         }
     }

@@ -1,10 +1,12 @@
-﻿namespace MinecraftClient.Network
+﻿using CWrapped;
+
+namespace MinecraftClient.Network
 {
     public class TickHandler
     {
-        public Minecraft ThisMc;
+        public Wrapped ThisMc;
 
-        public TickHandler(ref Minecraft mc)
+        public TickHandler(ref Wrapped mc)
         {
             ThisMc = mc;
         }

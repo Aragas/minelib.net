@@ -1,22 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using MinecraftClient.Enums;
 
-namespace MinecraftClient.Network
+namespace MinecraftClient
 {
     public partial class Minecraft
     {
-        private enum YggdrasilStatus
-        {
-            Error,
-            Success,
-            WrongPassword,
-            Blocked,
-            AccountMigrated,
-            NotPremium,
-            InvalidToken
-        };
-
         /// <summary>
         /// Allows to login to a premium Minecraft account using the Yggdrasil authentication scheme.
         /// </summary>
@@ -119,6 +109,5 @@ namespace MinecraftClient.Network
             }
 
         }
-
     }
 }

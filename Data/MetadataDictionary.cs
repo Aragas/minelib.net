@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CWrapped;
 
 namespace MinecraftClient.Data
 {
@@ -25,32 +26,32 @@ namespace MinecraftClient.Data
             set { entries[index] = value; }
         }
 
-        //public static MetadataDictionary FromStream(ref Wrapped stream)
-        //{
-        //    var value = new MetadataDictionary();
-        //    while (true)
-        //    {
-        //        byte key = stream.readVarInt();
-        //        if (key == 127) break;
-        //
-        //        byte type = (byte)((key & 0xE0) >> 5);
-        //        byte index = (byte)(key & 0x1F);
-        //
-        //        var entry = EntryTypes[type]();
-        //        entry.FromStream(stream);
-        //        entry.Index = index;
-        //
-        //        value[index] = entry;
-        //    }
-        //    return value;
-        //}
+        public static MetadataDictionary FromStream(ref Wrapped stream)
+        {
+            var value = new MetadataDictionary();
+            while (true)
+            {
+                byte key = stream.ReadByte();
+                if (key == 127) break;
+        
+                byte type = (byte)((key & 0xE0) >> 5);
+                byte index = (byte)(key & 0x1F);
+        
+                var entry = EntryTypes[type]();
+                entry.FromStream(ref stream);
+                entry.Index = index;
+        
+                value[index] = entry;
+            }
+            return value;
+        }
 
-        //public void WriteTo(ref Wrapped stream)
-        //{
-        //    foreach (var entry in entries)
-        //        entry.Value.WriteTo(stream, entry.Key);
-        //    stream.writeVarInt(0x7F);
-        //}
+        public void WriteTo(ref Wrapped stream)
+        {
+            foreach (var entry in entries)
+                entry.Value.WriteTo(ref stream, entry.Key);
+            stream.WriteVarInt(0x7F);
+        }
 
         delegate MetadataEntry CreateEntryInstance();
 

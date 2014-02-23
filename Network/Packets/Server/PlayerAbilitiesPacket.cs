@@ -4,7 +4,7 @@ namespace MinecraftClient.Network.Packets.Server
 {
     public struct PlayerAbilitiesPacket : IPacket
     {
-        public sbyte Flags;
+        public byte Flags;
         public float FlyingSpeed, WalkingSpeed;
 
         public const byte PacketId = 0x39;
@@ -12,17 +12,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Flags = stream.readSByte();
-            FlyingSpeed = stream.readFloat();
-            WalkingSpeed = stream.readFloat();
+            Flags = stream.ReadByte();
+            FlyingSpeed = stream.ReadFloat();
+            WalkingSpeed = stream.ReadFloat();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeSByte(Flags);
-            stream.writeFloat(FlyingSpeed);
-            stream.writeFloat(WalkingSpeed);
+            stream.WriteVarInt(Id);
+            stream.WriteByte(Flags);
+            stream.WriteFloat(FlyingSpeed);
+            stream.WriteFloat(WalkingSpeed);
             stream.Purge();
         }
     }

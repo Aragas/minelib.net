@@ -68,38 +68,38 @@ namespace MinecraftClient.Data
         public static ItemStack FromStream(ref Wrapped stream)
         {
             var slot = ItemStack.EmptyStack;
-            slot.Id = stream.readShort();
+            slot.Id = stream.ReadShort();
             if (slot.Empty)
                 return slot;
-            slot.Count = stream.readSByte();
-            slot.Metadata = stream.readShort();
-            var length = stream.readShort();
+            slot.Count = stream.ReadSByte();
+            slot.Metadata = stream.ReadShort();
+            var length = stream.ReadShort();
             if (length == -1)
                 return slot;
             slot.Nbt = new NbtCompound();
-            //var buffer = stream.ReadUInt8Array(length);
+            var buffer = stream.ReadByteArray(length);
             var nbt = new NbtFile();
-            //nbt.LoadFromBuffer(buffer, 0, length, NbtCompression.GZip, null);
+            nbt.LoadFromBuffer(buffer, 0, length, NbtCompression.GZip, null);
             slot.Nbt = nbt.RootTag;
             return slot;
         }
 
         public void WriteTo(ref Wrapped stream)
         {
-            stream.writeShort(Id);
+            stream.WriteShort(Id);
             if (Empty)
                 return;
-            stream.writeSByte(Count);
-            stream.writeShort(Metadata);
+            stream.WriteSByte(Count);
+            stream.WriteShort(Metadata);
             if (Nbt == null)
             {
-                stream.writeShort(-1);
+                stream.WriteShort(-1);
                 return;
             }
             var mStream = new MemoryStream();
             var file = new NbtFile(Nbt);
             file.SaveToStream(mStream, NbtCompression.GZip);
-            stream.writeShort((short)mStream.Position);
+            stream.WriteShort((short)mStream.Position);
             //stream.writeVarIntArray(mStream.GetBuffer(), 0, (int)mStream.Position);
         }
 

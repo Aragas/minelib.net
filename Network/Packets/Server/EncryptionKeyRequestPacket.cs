@@ -13,21 +13,21 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ServerId = stream.readString();
-            var pkLength = stream.readShort();
-            PublicKey = stream.readByteArray(pkLength);
-            var vtLength = stream.readShort();
-            VerificationToken = stream.readByteArray(vtLength);
+            ServerId = stream.ReadString();
+            var pkLength = stream.ReadShort();
+            PublicKey = stream.ReadByteArray(pkLength);
+            var vtLength = stream.ReadShort();
+            VerificationToken = stream.ReadByteArray(vtLength);
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeString(ServerId);
-            stream.writeShort((short)PublicKey.Length);
-            stream.writeByteArray(PublicKey);
-            stream.writeShort((short)VerificationToken.Length);
-            stream.writeByteArray(VerificationToken);
+            stream.WriteVarInt(Id);
+            stream.WriteString(ServerId);
+            stream.WriteShort((short)PublicKey.Length);
+            stream.WriteByteArray(PublicKey);
+            stream.WriteShort((short)VerificationToken.Length);
+            stream.WriteByteArray(VerificationToken);
             stream.Purge();
         }
     }

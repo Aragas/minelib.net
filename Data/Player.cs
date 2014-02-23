@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using CWrapped;
 
 namespace MinecraftClient.Network
 {
@@ -16,11 +17,11 @@ namespace MinecraftClient.Network
 
 
 
-        public Player(ref Minecraft mc)
+        public Player(ref Wrapped stream)
         {
-            mc.nh.wSock.writeVarInt(3);
-            mc.nh.wSock.writeBool(true);
-            mc.nh.wSock.Purge();
+            stream.WriteVarInt(3);
+            stream.WriteBool(true);
+            stream.Purge();
         }
     }
 }

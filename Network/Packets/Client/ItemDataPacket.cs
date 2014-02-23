@@ -13,19 +13,19 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ItemType = stream.readShort();
-            ItemId = stream.readShort();
-            var length = stream.readShort();
-            Text = Encoding.ASCII.GetString(stream.readByteArray(length));
+            ItemType = stream.ReadShort();
+            ItemId = stream.ReadShort();
+            var length = stream.ReadShort();
+            Text = Encoding.ASCII.GetString(stream.ReadByteArray(length));
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeShort(ItemType);
-            stream.writeShort(ItemId);
-            stream.writeShort((short)Text.Length);
-            stream.writeByteArray(Encoding.ASCII.GetBytes(Text));
+            stream.WriteVarInt(Id);
+            stream.WriteShort(ItemType);
+            stream.WriteShort(ItemId);
+            stream.WriteShort((short)Text.Length);
+            stream.WriteByteArray(Encoding.ASCII.GetBytes(Text));
             stream.Purge();
         }
     }

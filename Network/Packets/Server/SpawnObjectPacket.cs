@@ -17,38 +17,38 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            Type = (Objects)stream.readByte();
-            X = stream.readInt();
-            Y = stream.readInt();
-            Z = stream.readInt();
-            Yaw = stream.readByte();
-            Pitch = stream.readByte();
-            Data = stream.readInt();
+            EntityID = stream.ReadVarInt();
+            Type = (Objects)stream.ReadByte();
+            X = stream.ReadInt();
+            Y = stream.ReadInt();
+            Z = stream.ReadInt();
+            Yaw = stream.ReadByte();
+            Pitch = stream.ReadByte();
+            Data = stream.ReadInt();
             if (Data != 0)
             {
-                SpeedX = stream.readShort();
-                SpeedY = stream.readShort();
-                SpeedZ = stream.readShort();
+                SpeedX = stream.ReadShort();
+                SpeedY = stream.ReadShort();
+                SpeedZ = stream.ReadShort();
             }
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeByte((byte)Type);
-            stream.writeInt(X);
-            stream.writeInt(Y);
-            stream.writeInt(Z);
-            stream.writeByte(Yaw);
-            stream.writeByte(Pitch);
-            stream.writeInt(Data);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteByte((byte)Type);
+            stream.WriteInt(X);
+            stream.WriteInt(Y);
+            stream.WriteInt(Z);
+            stream.WriteByte(Yaw);
+            stream.WriteByte(Pitch);
+            stream.WriteInt(Data);
             if (Data != 0)
             {
-                stream.writeShort(SpeedX.Value);
-                stream.writeShort(SpeedY.Value);
-                stream.writeShort(SpeedZ.Value);
+                stream.WriteShort(SpeedX.Value);
+                stream.WriteShort(SpeedY.Value);
+                stream.WriteShort(SpeedZ.Value);
             }
             stream.Purge();
         }

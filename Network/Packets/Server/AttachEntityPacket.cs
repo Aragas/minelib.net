@@ -12,17 +12,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            VehicleID = stream.readInt();
-            Leash = stream.readBool();
+            EntityID = stream.ReadInt();
+            VehicleID = stream.ReadInt();
+            Leash = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeInt(VehicleID);
-            stream.writeBool(Leash);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteInt(VehicleID);
+            stream.WriteBool(Leash);
             stream.Purge();
         }
     }

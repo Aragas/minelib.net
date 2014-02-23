@@ -13,17 +13,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ExperienceBar = stream.readFloat();
-            Level = stream.readShort();
-            TotalExperience = stream.readShort();
+            ExperienceBar = stream.ReadFloat();
+            Level = stream.ReadShort();
+            TotalExperience = stream.ReadShort();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeFloat(ExperienceBar);
-            stream.writeShort(Level);
-            stream.writeShort(TotalExperience);
+            stream.WriteVarInt(Id);
+            stream.WriteFloat(ExperienceBar);
+            stream.WriteShort(Level);
+            stream.WriteShort(TotalExperience);
             stream.Purge();
         }
     }

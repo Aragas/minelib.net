@@ -14,17 +14,17 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            Action = (EntityAction)stream.readVarInt();
-            Unknown = stream.readShort();
+            EntityID = stream.ReadShort();
+            Action = (EntityAction)stream.ReadVarInt();
+            Unknown = stream.ReadShort();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeVarInt((byte)Action);
-            stream.writeVarInt(Unknown);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteVarInt((byte)Action);
+            stream.WriteVarInt(Unknown);
             stream.Purge();
         }
     }

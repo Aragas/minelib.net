@@ -14,19 +14,19 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Strafe = stream.readFloat();
-            Forward = stream.readFloat();
-            Jump = stream.readBool();
-            Unmount = stream.readBool();
+            Strafe = stream.ReadFloat();
+            Forward = stream.ReadFloat();
+            Jump = stream.ReadBool();
+            Unmount = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeFloat(Strafe);
-            stream.writeFloat(Forward);
-            stream.writeBool(Jump);
-            stream.writeBool(Unmount);
+            stream.WriteVarInt(Id);
+            stream.WriteFloat(Strafe);
+            stream.WriteFloat(Forward);
+            stream.WriteBool(Jump);
+            stream.WriteBool(Unmount);
             stream.Purge();
         }
     }

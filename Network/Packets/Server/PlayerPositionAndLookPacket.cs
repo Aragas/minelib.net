@@ -13,23 +13,23 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            X = stream.readDouble();
-            Y = stream.readDouble();
-            Z = stream.readDouble();
-            Yaw = stream.readFloat();
-            Pitch = stream.readFloat();
-            OnGround = stream.readBool();
+            X = stream.ReadDouble();
+            Y = stream.ReadDouble();
+            Z = stream.ReadDouble();
+            Yaw = stream.ReadFloat();
+            Pitch = stream.ReadFloat();
+            OnGround = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeDouble(X);
-            stream.writeDouble(Y);
-            stream.writeDouble(Z);
-            stream.writeFloat(Yaw);
-            stream.writeFloat(Pitch);
-            stream.writeBool(OnGround);
+            stream.WriteVarInt(Id);
+            stream.WriteDouble(X);
+            stream.WriteDouble(Y);
+            stream.WriteDouble(Z);
+            stream.WriteFloat(Yaw);
+            stream.WriteFloat(Pitch);
+            stream.WriteBool(OnGround);
             stream.Purge();
         }
     }

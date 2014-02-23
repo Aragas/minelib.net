@@ -12,15 +12,15 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Count = stream.readVarInt();
-            Text = stream.readString();
+            Count = stream.ReadVarInt();
+            Text = stream.ReadString();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(Count);
-            stream.writeString(Text);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(Count);
+            stream.WriteString(Text);
             stream.Purge();
         }
     }

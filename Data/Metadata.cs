@@ -4,7 +4,7 @@
     {
         public int ChunkX;
         public int ChunkZ;
-        public ushort PrimaryBitMap;
-        public ushort AddBitMap;
+        public short PrimaryBitMap;
+        public short AddBitMap;
     }
 }

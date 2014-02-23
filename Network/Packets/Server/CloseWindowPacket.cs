@@ -11,13 +11,13 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            WindowID = stream.readByte();
+            WindowID = stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeByte(WindowID);
+            stream.WriteVarInt(Id);
+            stream.WriteByte(WindowID);
             stream.Purge();
         }
     }

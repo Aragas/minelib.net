@@ -14,23 +14,23 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            SoundName = stream.readString();
-            X = stream.readInt();
-            Y = stream.readInt();
-            Z = stream.readInt();
-            Volume = stream.readFloat();
-            Pitch = stream.readByte();
+            SoundName = stream.ReadString();
+            X = stream.ReadInt();
+            Y = stream.ReadInt();
+            Z = stream.ReadInt();
+            Volume = stream.ReadFloat();
+            Pitch = stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeString(SoundName);
-            stream.writeInt(X);
-            stream.writeInt(Y);
-            stream.writeInt(Z);
-            stream.writeFloat(Volume);
-            stream.writeByte(Pitch);
+            stream.WriteVarInt(Id);
+            stream.WriteString(SoundName);
+            stream.WriteInt(X);
+            stream.WriteInt(Y);
+            stream.WriteInt(Z);
+            stream.WriteFloat(Volume);
+            stream.WriteByte(Pitch);
             stream.Purge();
         }
     }

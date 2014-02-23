@@ -58,17 +58,20 @@
     </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>MinecraftClient.Network.TestClient</StartupObject>
+    <StartupObject>MinecraftClient.TestClient</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Block.cs" />
     <Compile Include="Data\EntityProperty.cs" />
     <Compile Include="Data\EntityPropertyListItem.cs" />
+    <Compile Include="Data\Item.cs" />
     <Compile Include="Data\Size.cs" />
     <Compile Include="Data\SlotData.cs" />
     <Compile Include="Data\MetadadaShort.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="Data\ObjectData.cs" />
     <Compile Include="Data\Vector3.cs" />
     <Compile Include="Enums\Animation.cs" />
+    <Compile Include="Enums\Blocks.cs" />
     <Compile Include="Enums\ChatMode.cs" />
     <Compile Include="Enums\EntityEquipmentSlot.cs" />
     <Compile Include="Enums\ClickModen.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="Enums\ScoreboardPosition.cs" />
     <Compile Include="Enums\ServerState.cs" />
     <Compile Include="Enums\TeamMode.cs" />
+    <Compile Include="Enums\YggdrasilStatus.cs" />
     <Compile Include="Network\Packets\Server\AnimationPacket.cs" />
     <Compile Include="Network\Packets\Server\AttachEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\BlockActionPacket.cs" />
@@ -109,7 +114,7 @@
     <Compile Include="Network\Packets\Server\BlockChangePacket.cs" />
     <Compile Include="Network\Packets\Server\ChangeGameStatePacket.cs" />
     <Compile Include="Network\Packets\Server\ChatMessagePacket.cs" />
-    <Compile Include="Network\Packets\Server\BChunkDataPacket.cs" />
+    <Compile Include="Network\Packets\Server\ChunkDataPacket.cs" />
     <Compile Include="Network\Packets\Client\ClientStatusPacket.cs" />
     <Compile Include="Network\Packets\Server\CloseWindowPacket.cs" />
     <Compile Include="Network\Packets\Server\CollectItemPacket.cs" />
@@ -120,10 +125,10 @@
     <Compile Include="Network\Events\IPacketEventArgs.cs" />
     <Compile Include="Network\Events\MinecraftEvent.cs" />
     <Compile Include="Minecraft.cs" />
-    <Compile Include="MinecraftEvents.cs" />
-    <Compile Include="MinecraftYggdrasil.cs" />
+    <Compile Include="Minecraft.Events.cs" />
+    <Compile Include="Minecraft.Yggdrasil.cs" />
     <Compile Include="Network\NetworkHandler.cs" />
-    <Compile Include="Network\Packets\Server\BDestroyEntitiesPacket.cs" />
+    <Compile Include="Network\Packets\Server\DestroyEntitiesPacket.cs" />
     <Compile Include="Network\Packets\Server\DisconnectPacket.cs" />
     <Compile Include="Network\Packets\Server\DisplayScoreboardPacket.cs" />
     <Compile Include="Network\Packets\Server\EffectPacket.cs" />
@@ -132,13 +137,13 @@
     <Compile Include="Network\Packets\Client\EncryptionKeyResponsePacket.cs" />
     <Compile Include="Network\Packets\Client\EntityActionPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityEffectPacket.cs" />
-    <Compile Include="Network\Packets\Server\BEntityEquipmentPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityEquipmentPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityHeadLookPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityLookAndRelativeMovePacket.cs" />
     <Compile Include="Network\Packets\Server\EntityLookPacket.cs" />
     <Compile Include="Network\Packets\Server\BEntityMetadataPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityPacket.cs" />
-    <Compile Include="Network\Packets\Server\BEntityPropertiesPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityPropertiesPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityRelativeMovePacket.cs" />
     <Compile Include="Network\Packets\Server\EntityStatusPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityTeleportPacket.cs" />
@@ -153,12 +158,12 @@
     <Compile Include="Network\Packets\Server\LoginDisconnectPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginStartPacket.cs" />
     <Compile Include="Network\Packets\Server\LoginSuccessPacket.cs" />
-    <Compile Include="Network\Packets\Server\BMapChunkBulkPacket.cs" />
+    <Compile Include="Network\Packets\Server\MapChunkBulkPacket.cs" />
     <Compile Include="Network\Packets\Server\MapsPacket.cs" />
-    <Compile Include="Network\Packets\Server\BMultiBlockChangePacket.cs" />
+    <Compile Include="Network\Packets\Server\MultiBlockChangePacket.cs" />
     <Compile Include="Network\Packets\Server\OpenWindowPacket.cs" />
     <Compile Include="Network\Packets\PacketResponse.cs" />
-    <Compile Include="Enums\Packets.cs" />
+    <Compile Include="Enums\Packet.cs" />
     <Compile Include="Network\Packets\Server\ParticlePacket.cs" />
     <Compile Include="Network\Packets\Server\PlayerAbilitiesPacket.cs" />
     <Compile Include="Network\Packets\Client\PlayerDiggingPacket.cs" />
@@ -174,7 +179,7 @@
     <Compile Include="Network\Packets\Server\ScoreboardObjectivePacket.cs" />
     <Compile Include="Network\Packets\Server\PingPacket.cs" />
     <Compile Include="Network\Packets\Server\SetExperiencePacket.cs" />
-    <Compile Include="Network\Packets\Server\BSetSlotPacket.cs" />
+    <Compile Include="Network\Packets\Server\SetSlotPacket.cs" />
     <Compile Include="Network\Packets\Server\SignEditorOpenPacket.cs" />
     <Compile Include="Network\Packets\Server\SoundEffectPacket.cs" />
     <Compile Include="Network\Packets\Client\SoundOrParticleEffectPacket.cs" />
@@ -194,9 +199,9 @@
     <Compile Include="Network\Packets\Server\UpdateSignPacket.cs" />
     <Compile Include="Network\Packets\Server\UseBedPacket.cs" />
     <Compile Include="Network\Packets\Client\UseEntityPacket.cs" />
-    <Compile Include="Network\Packets\Server\BWindowItemsPacket.cs" />
+    <Compile Include="Network\Packets\Server\WindowItemsPacket.cs" />
     <Compile Include="Network\Packets\Server\WindowPropertyPacket.cs" />
-    <Compile Include="Network\Player.cs" />
+    <Compile Include="Data\Player.cs" />
     <Compile Include="TestClient.cs" />
     <Compile Include="Network\TickHandler.cs" />
   </ItemGroup>
@@ -234,6 +239,9 @@
       <Project>{4488498d-976d-4da3-bf72-109531af0488}</Project>
       <Name>fNbt</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Network\NetworkHandler.Events.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,13 +11,13 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            OnGround = stream.readBool();
+            OnGround = stream.ReadBool();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeBool(OnGround);
+            stream.WriteVarInt(Id);
+            stream.WriteBool(OnGround);
             stream.Purge();
         }
     }

@@ -11,13 +11,13 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Time = stream.readLong();
+            Time = stream.ReadLong();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeLong(Time);
+            stream.WriteVarInt(Id);
+            stream.WriteLong(Time);
             stream.Purge();
         }
     }

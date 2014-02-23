@@ -14,24 +14,24 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ItemName = stream.readString();
-            RemoveItem = stream.readBool();
+            ItemName = stream.ReadString();
+            RemoveItem = stream.ReadBool();
             if (!RemoveItem)
             {
-                ScoreName = stream.readString();
-                Value = stream.readInt();
+                ScoreName = stream.ReadString();
+                Value = stream.ReadInt();
             }
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeString(ItemName);
-            stream.writeBool(RemoveItem);
+            stream.WriteVarInt(Id);
+            stream.WriteString(ItemName);
+            stream.WriteBool(RemoveItem);
             if (!RemoveItem)
             {
-                stream.writeString(ScoreName);
-                stream.writeInt(Value.Value);
+                stream.WriteString(ScoreName);
+                stream.WriteInt(Value.Value);
             }
             stream.Purge();
         }

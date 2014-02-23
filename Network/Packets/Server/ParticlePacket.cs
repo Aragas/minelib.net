@@ -15,29 +15,29 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ParticleName = stream.readString();
-            X = stream.readFloat();
-            Y = stream.readFloat();
-            Z = stream.readFloat();
-            OffsetX = stream.readFloat();
-            OffsetY = stream.readFloat();
-            OffsetZ = stream.readFloat();
-            ParticleData = stream.readFloat();
-            NumberOfParticles = stream.readInt();
+            ParticleName = stream.ReadString();
+            X = stream.ReadFloat();
+            Y = stream.ReadFloat();
+            Z = stream.ReadFloat();
+            OffsetX = stream.ReadFloat();
+            OffsetY = stream.ReadFloat();
+            OffsetZ = stream.ReadFloat();
+            ParticleData = stream.ReadFloat();
+            NumberOfParticles = stream.ReadInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeString(ParticleName);
-            stream.writeFloat(X);
-            stream.writeFloat(Y);
-            stream.writeFloat(Z);
-            stream.writeFloat(OffsetX);
-            stream.writeFloat(OffsetY);
-            stream.writeFloat(OffsetZ);
-            stream.writeFloat(ParticleData);
-            stream.writeInt(NumberOfParticles);
+            stream.WriteVarInt(Id);
+            stream.WriteString(ParticleName);
+            stream.WriteFloat(X);
+            stream.WriteFloat(Y);
+            stream.WriteFloat(Z);
+            stream.WriteFloat(OffsetX);
+            stream.WriteFloat(OffsetY);
+            stream.WriteFloat(OffsetZ);
+            stream.WriteFloat(ParticleData);
+            stream.WriteInt(NumberOfParticles);
         }
     }
 }

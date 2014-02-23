@@ -1,4 +1,6 @@
-﻿using MinecraftClient.Data;
+﻿using System.Drawing;
+using MinecraftClient.Data;
+using MinecraftClient.Network.Packets;
 
 namespace MinecraftClient.Network
 {
@@ -13,13 +15,13 @@ namespace MinecraftClient.Network
 
     public delegate void MessageHandler(object sender, string message, string name);
 
-    public delegate void PacketHandler(object sender, object packet, int id);
+    public delegate void PacketHandler(object sender, IPacket packet, int id);
 
     #endregion
 
     #region Block Events
 
-    public delegate void BlockChangedEventHandler(int x, byte y, int z, int newType, byte data);
+    public delegate void BlockChangedHandler(int x, byte y, int z, int newType, byte data);
 
     public delegate void BlockBreakAnimationHandler(Vector3 Location, int Entity_ID, byte Stage);
 
@@ -85,7 +87,7 @@ namespace MinecraftClient.Network
 
     public delegate void HeldSlotChangedHandler(byte slot);
 
-    //public delegate void SetWindowItemHandler(byte window_ID, short slot, Item item);
+    public delegate void SetWindowItemHandler(byte window_ID, short slot, Item item);
 
     //public delegate void SetInventoryItemHandler(short slot, Item item);
 
@@ -109,11 +111,11 @@ namespace MinecraftClient.Network
 
     public delegate void PluginMessageHandler(string channel, byte[] data);
 
-    public delegate void PlayerListitemAddHandler(string name, short ping);
+    public delegate void PlayerListItemAddHandler(string name, short ping);
 
-    public delegate void PlayerListitemRemoveHandler(string name);
+    public delegate void PlayerListItemRemoveHandler(string name);
 
-    public delegate void PlayerListitemUpdateHandler(string name, short ping);
+    public delegate void PlayerListItemUpdateHandler(string name, short ping);
 
     public delegate void LoginSuccessHandler(object sender);
 
@@ -129,7 +131,7 @@ namespace MinecraftClient.Network
 
     public delegate void PingMsReceivedHandler(int msPing);
 
-    //public delegate void PingResponseReceivedHandler(string VersionName, int ProtocolVersion, int MaxPlayers, int OnlinePlayers, string[] PlayersSample, string MOTD, Image Favicon);
+    public delegate void PingResponseReceivedHandler(string VersionName, int ProtocolVersion, int MaxPlayers, int OnlinePlayers, string[] PlayersSample, string MOTD, Image Favicon);
 
     #endregion
 
@@ -153,7 +155,7 @@ namespace MinecraftClient.Network
 
         #region Block Events
 
-        public event BlockChangedEventHandler BlockChanged;
+        public event BlockChangedHandler BlockChanged;
 
         //public event BlockBreakAnimationHandler BlockBreaking;
 
@@ -243,11 +245,11 @@ namespace MinecraftClient.Network
 
         public event PluginMessageHandler PluginMessage;
 
-        public event PlayerListitemAddHandler PlayerListitemAdd;
+        public event PlayerListItemAddHandler PlayerListitemAdd;
 
-        public event PlayerListitemRemoveHandler PlayerListitemRemove;
+        public event PlayerListItemRemoveHandler PlayerListitemRemove;
 
-        public event PlayerListitemUpdateHandler PlayerListitemUpdate;
+        public event PlayerListItemUpdateHandler PlayerListitemUpdate;
 
         public event LoginSuccessHandler LoginSuccess;
 
@@ -370,7 +372,7 @@ namespace MinecraftClient.Network
                 ErrorMessage(Sender, "(NETWORK): " + Message);
         }
 
-        void RaisePacketHandled(object Sender, object Packet, int id)
+        void RaisePacketHandled(object Sender, IPacket Packet, int id)
         {
             if (PacketHandled != null)
                 PacketHandled(Sender, Packet, id);

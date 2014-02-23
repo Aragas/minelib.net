@@ -4,7 +4,7 @@ using MinecraftClient.Enums;
 
 namespace MinecraftClient.Network.Packets.Server
 {
-    public struct SpawnMobPacket : IPacket
+    public struct BSpawnMobPacket : IPacket
     {
         public int EntityID;
         public Mobs Type;
@@ -18,35 +18,35 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            Type = (Mobs)stream.readVarInt();
-            X = stream.readShort();
-            Y = stream.readShort();
-            Z = stream.readShort();
-            Pitch = stream.readByte();
-            HeadPitch = stream.readByte();
-            Yaw = stream.readByte();
-            VelocityX = stream.readShort();
-            VelocityY = stream.readShort();
-            VelocityZ = stream.readShort();
-            //Metadata = MetadataDictionary.FromStream(stream);
+            EntityID = stream.ReadShort();
+            Type = (Mobs)stream.ReadByte();
+            X = stream.ReadInt();
+            Y = stream.ReadInt();
+            Z = stream.ReadInt();
+            Pitch = stream.ReadByte();
+            HeadPitch = stream.ReadByte();
+            Yaw = stream.ReadByte();
+            VelocityX = stream.ReadShort();
+            VelocityY = stream.ReadShort();
+            VelocityZ = stream.ReadShort();
+            Metadata = MetadataDictionary.FromStream(ref stream);
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeVarInt((byte)Type);
-            stream.writeVarInt(X);
-            stream.writeVarInt(Y);
-            stream.writeVarInt(Z);
-            stream.writeVarInt(Pitch);
-            stream.writeVarInt(HeadPitch);
-            stream.writeVarInt(Yaw);
-            stream.writeShort(VelocityX);
-            stream.writeShort(VelocityY);
-            stream.writeShort(VelocityZ);
-            //Metadata.WriteTo(stream);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteByte((byte)Type);
+            stream.WriteInt(X);
+            stream.WriteInt(Y);
+            stream.WriteInt(Z);
+            stream.WriteByte(Pitch);
+            stream.WriteByte(HeadPitch);
+            stream.WriteByte(Yaw);
+            stream.WriteShort(VelocityX);
+            stream.WriteShort(VelocityY);
+            stream.WriteShort(VelocityZ);
+            Metadata.WriteTo(ref stream);
             stream.Purge();
         }
     }

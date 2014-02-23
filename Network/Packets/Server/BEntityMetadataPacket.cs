@@ -3,7 +3,7 @@ using MinecraftClient.Data;
 
 namespace MinecraftClient.Network.Packets.Server
 {
-    public struct EntityMetadataPacket : IPacket
+    public struct BEntityMetadataPacket : IPacket
     {
         public int EntityID;
         public MetadataDictionary Metadata;
@@ -13,15 +13,15 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            //Metadata = MetadataDictionary.FromStream(stream);
+            EntityID = stream.ReadInt();
+            Metadata = MetadataDictionary.FromStream(ref stream);
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            //Metadata.WriteTo(stream);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            Metadata.WriteTo(ref stream);
             stream.Purge();
         }
     }

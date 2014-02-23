@@ -11,15 +11,15 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            AgeOfTheWorld = stream.readLong();
-            TimeOfDay = stream.readLong();
+            AgeOfTheWorld = stream.ReadLong();
+            TimeOfDay = stream.ReadLong();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeLong(AgeOfTheWorld);
-            stream.writeLong(TimeOfDay);
+            stream.WriteVarInt(Id);
+            stream.WriteLong(AgeOfTheWorld);
+            stream.WriteLong(TimeOfDay);
             stream.Purge();
         }
     }

@@ -12,17 +12,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ItemDamage = stream.readInt();
-            var length = stream.readShort();
-            Data = stream.readByteArray(length);
+            ItemDamage = stream.ReadInt();
+            var length = stream.ReadShort();
+            Data = stream.ReadByteArray(length);
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(ItemDamage);
-            stream.writeShort((short)Data.Length);
-            stream.writeByteArray(Data);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(ItemDamage);
+            stream.WriteShort((short)Data.Length);
+            stream.WriteByteArray(Data);
             stream.Purge();
         }
     }

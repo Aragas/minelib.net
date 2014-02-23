@@ -13,15 +13,15 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Position = (ScoreboardPosition)stream.readByte();
-            ScoreName = stream.readString();
+            Position = (ScoreboardPosition)stream.ReadByte();
+            ScoreName = stream.ReadString();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeByte((byte)Position);
-            stream.writeString(ScoreName);
+            stream.WriteVarInt(Id);
+            stream.WriteByte((byte)Position);
+            stream.WriteString(ScoreName);
             stream.Purge();
         }
     }

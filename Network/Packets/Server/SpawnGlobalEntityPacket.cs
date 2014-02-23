@@ -5,7 +5,7 @@ namespace MinecraftClient.Network.Packets.Server
     public struct SpawnGlobalEntityPacket : IPacket
     {
         public int EntityID;
-        public sbyte Type;
+        public byte Type;
         public int X, Y, Z;
 
         public const byte PacketId = 0x2C;
@@ -13,21 +13,21 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            Type = stream.readSByte();
-            X = stream.readInt();
-            Y = stream.readInt();
-            Z = stream.readInt();
+            EntityID = stream.ReadVarInt();
+            Type = stream.ReadByte();
+            X = stream.ReadInt();
+            Y = stream.ReadInt();
+            Z = stream.ReadInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeSByte(Type);
-            stream.writeInt(X);
-            stream.writeInt(Y);
-            stream.writeInt(Z);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteByte(Type);
+            stream.WriteInt(X);
+            stream.WriteInt(Y);
+            stream.WriteInt(Z);
             stream.Purge();
         }
     }

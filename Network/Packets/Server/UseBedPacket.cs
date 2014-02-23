@@ -14,19 +14,19 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            X = stream.readInt();
-            Y = stream.readByte();
-            Z = stream.readInt();
+            EntityID = stream.ReadInt();
+            X = stream.ReadInt();
+            Y = stream.ReadByte();
+            Z = stream.ReadInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeInt(X);
-            stream.writeVarInt(Y);
-            stream.writeInt(Z);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteInt(X);
+            stream.WriteByte(Y);
+            stream.WriteInt(Z);
             stream.Purge();
         }
     }

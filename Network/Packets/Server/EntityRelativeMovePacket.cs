@@ -12,19 +12,19 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            DeltaX = stream.readSByte();
-            DeltaY = stream.readSByte();
-            DeltaZ = stream.readSByte();
+            EntityID = stream.ReadInt();
+            DeltaX = stream.ReadSByte();
+            DeltaY = stream.ReadSByte();
+            DeltaZ = stream.ReadSByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeSByte(DeltaX);
-            stream.writeSByte(DeltaY);
-            stream.writeSByte(DeltaZ);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteSByte(DeltaX);
+            stream.WriteSByte(DeltaY);
+            stream.WriteSByte(DeltaZ);
             stream.Purge();
         }
     }

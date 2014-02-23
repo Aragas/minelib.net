@@ -6,7 +6,7 @@ using MinecraftClient.Network.Packets;
 using MinecraftClient.Network.Packets.Client;
 using MinecraftClient.Network.Packets.Server;
 
-namespace MinecraftClient.Network
+namespace MinecraftClient
 {
     static class TestClient
     {
@@ -18,7 +18,7 @@ namespace MinecraftClient.Network
         {
             Client = new Minecraft("TestBot", "", false);
 
-            Client.PacketHandled += Client_PacketHandled;
+            Client.OnPacketHandled += Client_PacketHandled;
             Client.LoginFailure += (sender, reason) => Console.Write(reason + "1243");
 
             Client.Login();
@@ -35,8 +35,14 @@ namespace MinecraftClient.Network
                 NextState = NextState.Login,
             });
 
-            Client.SendPacket(new LoginStartPacket { Name = "Aragasas" });
+            Client.SendPacket(new LoginStartPacket { Name = "TestBot" });
 
+            while (!Client.ready) { }
+
+            Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.InitialSpawn} );
+            //Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.Respawn });
+
+            //Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.InitialSpawn} );
 
 
             while (true)
@@ -46,9 +52,9 @@ namespace MinecraftClient.Network
             Console.Read();
         }
 
-        private static void Client_PacketHandled(object sender, object packet, int id)
+        private static void Client_PacketHandled(object sender, IPacket packet, int id)
         {
-            list.Add(packet as IPacket);
+            list.Add(packet);
         }
     }
 }

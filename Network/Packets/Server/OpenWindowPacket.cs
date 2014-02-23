@@ -16,25 +16,25 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            WindowID = stream.readByte();
-            InventoryType = stream.readByte();
-            WindowTitle = stream.readString();
-            NumberOfSlots = stream.readByte();
-            UseProvidedTitle = stream.readBool();
+            WindowID = stream.ReadByte();
+            InventoryType = stream.ReadByte();
+            WindowTitle = stream.ReadString();
+            NumberOfSlots = stream.ReadByte();
+            UseProvidedTitle = stream.ReadBool();
             if (InventoryType == 11)
-                EntityID = stream.readInt();
+                EntityID = stream.ReadInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeByte(WindowID);
-            stream.writeByte(InventoryType);
-            stream.writeString(WindowTitle);
-            stream.writeByte(NumberOfSlots);
-            stream.writeBool(UseProvidedTitle);
+            stream.WriteVarInt(Id);
+            stream.WriteByte(WindowID);
+            stream.WriteByte(InventoryType);
+            stream.WriteString(WindowTitle);
+            stream.WriteByte(NumberOfSlots);
+            stream.WriteBool(UseProvidedTitle);
             if (InventoryType == 11)
-                stream.writeInt(EntityID.GetValueOrDefault());
+                stream.WriteInt(EntityID.GetValueOrDefault());
             stream.Purge();
         }
     }

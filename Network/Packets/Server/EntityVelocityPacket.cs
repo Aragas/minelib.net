@@ -12,19 +12,19 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            VelocityX = stream.readShort();
-            VelocityY = stream.readShort();
-            VelocityZ = stream.readShort();
+            EntityID = stream.ReadInt();
+            VelocityX = stream.ReadShort();
+            VelocityY = stream.ReadShort();
+            VelocityZ = stream.ReadShort();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeShort(VelocityX);
-            stream.writeShort(VelocityY);
-            stream.writeShort(VelocityZ);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteShort(VelocityX);
+            stream.WriteShort(VelocityY);
+            stream.WriteShort(VelocityZ);
             stream.Purge();
         }
     }

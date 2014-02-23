@@ -15,19 +15,19 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ProtocolVersion = stream.readVarInt();
-            ServerAddress = stream.readString();
-            ServerPort = stream.readShort();
-            NextState = (NextState)stream.readVarInt();
+            ProtocolVersion = stream.ReadVarInt();
+            ServerAddress = stream.ReadString();
+            ServerPort = stream.ReadShort();
+            NextState = (NextState)stream.ReadVarInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(ProtocolVersion);
-            stream.writeString(ServerAddress);
-            stream.writeShort(ServerPort);
-            stream.writeVarInt((byte)NextState);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(ProtocolVersion);
+            stream.WriteString(ServerAddress);
+            stream.WriteShort(ServerPort);
+            stream.WriteVarInt((byte)NextState);
             stream.Purge();
         }
     }

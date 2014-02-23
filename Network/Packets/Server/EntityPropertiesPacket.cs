@@ -14,24 +14,24 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            var count = stream.readShort();
+            EntityID = stream.ReadShort();
+            var count = stream.ReadShort();
             if (count < 0)
                 throw new InvalidOperationException("Cannot specify less than zero properties.");
             Properties = new EntityProperty[count];
             for (int i = 0; i < count; i++)
             {
                 var property = new EntityProperty();
-                property.Key = stream.readString();
-                property.Value = stream.readDouble();
-                var listLength = stream.readShort();
+                property.Key = stream.ReadString();
+                property.Value = stream.ReadDouble();
+                var listLength = stream.ReadShort();
                 property.UnknownList = new EntityPropertyListItem[listLength];
                 for (int j = 0; j < listLength; j++)
                 {
                     var item = new EntityPropertyListItem();
-                    item.UUID = stream.readLong();
-                    item.Amount = stream.readDouble();
-                    //item.Operation = stream.readVarInt();
+                    item.UUID = stream.ReadLong();
+                    item.Amount = stream.ReadDouble();
+                    item.Operation = stream.ReadByte();
                     property.UnknownList[j] = item;
                 }
                 Properties[i] = property;
@@ -40,19 +40,19 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeVarInt(Properties.Length);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteVarInt(Properties.Length);
             for (int i = 0; i < Properties.Length; i++)
             {
-                stream.writeString(Properties[i].Key);
-                stream.writeDouble(Properties[i].Value);
-                stream.writeShort((short)Properties[i].UnknownList.Length);
+                stream.WriteString(Properties[i].Key);
+                stream.WriteDouble(Properties[i].Value);
+                stream.WriteShort((short)Properties[i].UnknownList.Length);
                 for (int j = 0; j < Properties[i].UnknownList.Length; j++)
                 {
-                    stream.writeLong(Properties[i].UnknownList[j].UUID);
-                    stream.writeDouble(Properties[i].UnknownList[j].Amount);
-                    stream.writeVarInt(Properties[i].UnknownList[j].Operation);
+                    stream.WriteLong(Properties[i].UnknownList[j].UUID);
+                    stream.WriteDouble(Properties[i].UnknownList[j].Amount);
+                    stream.WriteByte(Properties[i].UnknownList[j].Operation);
                 }
             }
             stream.Purge();

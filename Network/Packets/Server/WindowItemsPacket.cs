@@ -13,20 +13,20 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            WindowId = stream.readByte();
-            short count = stream.readShort();
+            WindowId = stream.ReadByte();
+            short count = stream.ReadShort();
             SlotData = new ItemStack[count];
-            //for (int i = 0; i < count; i++)
-            //SlotData[i] = ItemStack.FromStream(stream);
+            for (int i = 0; i < count; i++)
+                SlotData[i] = ItemStack.FromStream(ref stream);
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(WindowId);
-            stream.writeShort((short)SlotData.Length);
-            //for (int i = 0; i < SlotData.Length; i++)
-            //SlotData[i].WriteTo(stream);
+            stream.WriteVarInt(Id);
+            stream.WriteByte(WindowId);
+            stream.WriteShort((short)SlotData.Length);
+            for (int i = 0; i < SlotData.Length; i++)
+                SlotData[i].WriteTo(ref stream);
             stream.Purge();
         }
     }

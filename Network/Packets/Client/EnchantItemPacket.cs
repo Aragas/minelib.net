@@ -12,15 +12,15 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            WindowId = stream.readByte();
-            Enchantment = stream.readByte();
+            WindowId = stream.ReadByte();
+            Enchantment = stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(WindowId);
-            stream.writeVarInt(Enchantment);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(WindowId);
+            stream.WriteVarInt(Enchantment);
             stream.Purge();
         }
     }

@@ -12,18 +12,18 @@ namespace MinecraftClient.Network.Packets.Client
 
         public void ReadPacket(ref Wrapped stream)
         {
-            var ssLength = stream.readShort();
+            var ssLength = stream.ReadShort();
             //SharedSecret = stream.ReadUInt8Array(ssLength);
-            var vtLength = stream.readShort();
+            var vtLength = stream.ReadShort();
             //VerificationToken = stream.ReadUInt8Array(vtLength);
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeShort((short)SharedSecret.Length);
+            stream.WriteVarInt(Id);
+            stream.WriteShort((short)SharedSecret.Length);
             //stream.writeVarIntArray(SharedSecret);
-            stream.writeShort((short)VerificationToken.Length);
+            stream.WriteShort((short)VerificationToken.Length);
             //stream.writeVarIntArray(VerificationToken);
             stream.Purge();
         }

@@ -1,7 +1,36 @@
-﻿namespace MinecraftClient.Network
+﻿using System;
+using MinecraftClient.Enums;
+using MinecraftClient.Network;
+using MinecraftClient.Network.Packets;
+using MinecraftClient.Network.Packets.Server;
+
+namespace MinecraftClient
 {
     public partial class Minecraft
     {
+        public bool ready;
+
+        public event PacketHandler OnPacketHandled;
+
+        void RaisePacketHandled(object sender, IPacket packet, int id)
+        {
+            ready = true;
+            switch ((Packet)id)
+            {
+                case Packet.KeepAlive:
+                    KeepAlivePacket p = (KeepAlivePacket)packet;
+                    Console.WriteLine(p.KeepAlive);
+                    SendPacket(packet);
+                    break;
+
+                default:
+                    if (OnPacketHandled != null)
+                        OnPacketHandled(sender, packet, id);
+                    break;
+            }
+        }
+
+
         #region Event Messengers
 
         #region Server Events
@@ -101,12 +130,6 @@
         {
             if (ErrorMessage != null)
                 ErrorMessage(Sender, "(NETWORK): " + Message);
-        }
-
-        void RaisePacketHandled(object Sender, object Packet, int id)
-        {
-            if (PacketHandled != null)
-                PacketHandled(Sender, Packet, id);
         }
 
         void RaiseError(object Sender, string Message)
@@ -354,13 +377,11 @@
 
         public event MessageHandler Message;
 
-        public event PacketHandler PacketHandled;
-
         #endregion
 
         #region Block Events
 
-        public event BlockChangedEventHandler BlockChanged;
+        public event BlockChangedHandler BlockChanged;
 
         //public event BlockBreakAnimationHandler BlockBreaking;
 
@@ -450,11 +471,11 @@
 
         public event PluginMessageHandler PluginMessage;
 
-        public event PlayerListitemAddHandler PlayerListitemAdd;
+        public event PlayerListItemAddHandler PlayerListitemAdd;
 
-        public event PlayerListitemRemoveHandler PlayerListitemRemove;
+        public event PlayerListItemRemoveHandler PlayerListitemRemove;
 
-        public event PlayerListitemUpdateHandler PlayerListitemUpdate;
+        public event PlayerListItemUpdateHandler PlayerListitemUpdate;
 
         public event LoginSuccessHandler LoginSuccess;
 

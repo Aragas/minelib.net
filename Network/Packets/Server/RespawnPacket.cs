@@ -15,19 +15,19 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            Dimension = (Dimension)stream.readInt();
-            Difficulty = (Difficulty)stream.readByte();
-            GameMode = (GameMode)stream.readByte();
-            LevelType = stream.readString();
+            Dimension = (Dimension)stream.ReadInt();
+            Difficulty = (Difficulty)stream.ReadByte();
+            GameMode = (GameMode)stream.ReadByte();
+            LevelType = stream.ReadString();
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt((int)Dimension);
-            stream.writeByte((byte)Difficulty);
-            stream.writeByte((byte)GameMode);
-            stream.writeString(LevelType);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt((int)Dimension);
+            stream.WriteByte((byte)Difficulty);
+            stream.WriteByte((byte)GameMode);
+            stream.WriteString(LevelType);
             stream.Purge();
         }
     }

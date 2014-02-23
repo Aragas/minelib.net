@@ -5,10 +5,11 @@ using System.Threading;
 using CWrapped;
 ﻿using MinecraftClient.Enums;
 ﻿using MinecraftClient.Network.Packets;
+﻿using MinecraftClient.Network.Packets.Client;
 
 namespace MinecraftClient.Network
 {
-    public class NetworkHandler : IDisposable
+    public partial class NetworkHandler : IDisposable
     {
         #region Variables
 
@@ -82,9 +83,6 @@ namespace MinecraftClient.Network
         /// </summary>
         public void Stop()
         {
-            DebugMessage(this, "Stopping network handler...");
-            InfoMessage(this, "Disconnected from Minecraft Server.");
-
             Dispose();
         }
 
@@ -101,6 +99,11 @@ namespace MinecraftClient.Network
             catch (SocketException) { }
             catch (ObjectDisposedException) { }
 
+            //do
+            //{
+            //
+            //} while (FindNextPacket());
+
             //if (!handler.HasBeenKicked)
             //{
             //    ConsoleIO.WriteLine("Connection has been lost.");
@@ -116,23 +119,25 @@ namespace MinecraftClient.Network
         {
             try
             {
-                if (baseSock.Client == null || !baseSock.Connected) { return false; }
+                if (baseSock.Client == null || !baseSock.Connected)
+                    return false;
+                
                 while (baseSock.Client.Available > 0)
                 {
                     Console.WriteLine("In While");
 
-                    int length = wSock.readVarInt();
-                    int packetID = wSock.readVarInt();
+                    int length = wSock.ReadVarInt();
+                    Console.WriteLine("Lenght: " + length);
+                    int packetID = wSock.ReadVarInt();
 
-                    Console.WriteLine("ID: " + packetID);
+                    Console.WriteLine("ID : 0x" + String.Format("{0:X}", packetID));
 
                     switch (mainMC.ServerState)
                     {
                         case (int) ServerState.Status:
                             if (ServerResponse.ServerStatusResponse[packetID] == null)
                             {
-                                RaiseSocketError(this, "Unknown Packet ID. State: 1, Packet: " + packetID);
-                                wSock.readByteArray(length - 1); // -- bypass the packet
+                                wSock.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
@@ -144,8 +149,7 @@ namespace MinecraftClient.Network
                         case (int) ServerState.Login:
                             if (ServerResponse.ServerLoginResponse[packetID] == null)
                             {
-                                RaiseSocketError(this, "Unknown Packet ID. State: 2, Packet: " + packetID);
-                                wSock.readByteArray(length - 1); // -- bypass the packet
+                                wSock.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
@@ -161,8 +165,81 @@ namespace MinecraftClient.Network
                         case (int) ServerState.Play:
                             if (ServerResponse.ServerPlayResponse[packetID] == null)
                             {
-                                RaiseSocketError(this, "Unknown Packet ID. State: 3, Packet: " + packetID);
-                                wSock.readByteArray(length - 1); // -- bypass the packet
+                                wSock.ReadByteArray(length - 1); // -- bypass the packet
+                                continue;
+                            }
+
+                            var packetp = ServerResponse.ServerPlayResponse[packetID]();
+                            packetp.ReadPacket(ref wSock);
+                            RaisePacketHandled(this, packetp, packetID);
+
+                            break;
+                    }
+                    //Send(new PlayerPacket {OnGround = true});
+                    //if (WorldTick != null)
+                    //    WorldTick.DoTick();
+                    Console.WriteLine("Ololo");
+                    Console.WriteLine(" ");
+                }
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("Error");
+                //Stop();
+                return false;
+            }
+            return true;
+        }
+
+        bool FindNextPacket()
+        {
+            try
+            {
+                if (baseSock.Client == null || !baseSock.Connected) { return false; }
+                while (baseSock.Client.Available > 0)
+                {
+                    Console.WriteLine("In While");
+
+                    int length = wSock.ReadVarInt();
+                    Console.WriteLine("Got Lenght");
+                    int packetID = wSock.ReadVarInt();
+
+                    Console.WriteLine("ID: " + packetID);
+
+                    switch (mainMC.ServerState)
+                    {
+                        case (int)ServerState.Status:
+                            if (ServerResponse.ServerStatusResponse[packetID] == null)
+                            {
+                                wSock.ReadByteArray(length - 1); // -- bypass the packet
+                                continue;
+                            }
+
+                            var packets = ServerResponse.ServerStatusResponse[packetID]();
+                            RaisePacketHandled(this, packets, packetID);
+
+                            break;
+
+                        case (int)ServerState.Login:
+                            if (ServerResponse.ServerLoginResponse[packetID] == null)
+                            {
+                                wSock.ReadByteArray(length - 1); // -- bypass the packet
+                                continue;
+                            }
+
+                            var packetl = ServerResponse.ServerLoginResponse[packetID]();
+                            packetl.ReadPacket(ref wSock);
+                            RaisePacketHandled(this, packetl, packetID);
+
+                            if (packetID == 2)
+                                mainMC.ServerState = 1;
+
+                            break;
+
+                        case (int)ServerState.Play:
+                            if (ServerResponse.ServerPlayResponse[packetID] == null)
+                            {
+                                wSock.ReadByteArray(length - 1); // -- bypass the packet
                                 continue;
                             }
 
@@ -184,9 +261,6 @@ namespace MinecraftClient.Network
                 if (e.GetType() != typeof(ThreadAbortException))
                 {
                     Console.WriteLine("Error");
-                    RaiseSocketError(this, "Critical error in handling packets.");
-                    RaiseSocketError(this, e.Message);
-                    RaiseSocketError(this, e.StackTrace);
                     Stop();
                     return false;
                 }
@@ -198,43 +272,6 @@ namespace MinecraftClient.Network
         {
             packet.WritePacket(ref wSock);
         }
-
-        #region Event Messengers
-        public void RaiseSocketError(object sender, string message)
-        {
-            if (SocketError != null)
-                SocketError(sender, message);
-
-        }
-        public void RaiseSocketInfo(object sender, string message)
-        {
-            if (InfoMessage != null)
-                InfoMessage(sender, message);
-        }
-        public void RaiseSocketDebug(object sender, string message)
-        {
-            if (DebugMessage != null)
-                DebugMessage(sender, message);
-        }
-        public void RaisePacketHandled(object sender, object packet, int id)
-        {
-            if (PacketHandled != null)
-                PacketHandled(sender, packet, id);
-        }
-        #endregion
-        #region Event Delegates
-        public delegate void SocketErrorHandler(object sender, string message);
-        public event SocketErrorHandler SocketError;
-
-        public delegate void NetworkInfoHandler(object sender, string message);
-        public event NetworkInfoHandler InfoMessage;
-
-        public delegate void NetworkDebugHandler(object sender, string message);
-        public event NetworkDebugHandler DebugMessage;
-
-        public delegate void PacketHandledHandler(object sender, object packet, int id);
-        public event PacketHandledHandler PacketHandled;
-        #endregion
 
         public void Dispose()
         {

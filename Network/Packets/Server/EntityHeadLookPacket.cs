@@ -12,15 +12,15 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            HeadYaw = stream.readByte();
+            EntityID = stream.ReadInt();
+            HeadYaw = stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeByte(HeadYaw);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteByte(HeadYaw);
             stream.Purge();
         }
     }

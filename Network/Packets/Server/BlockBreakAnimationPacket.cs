@@ -6,28 +6,28 @@ namespace MinecraftClient.Network.Packets.Server
     {
         public int EntityID;
         public int X, Y, Z;
-        public sbyte DestroyStage;
+        public byte DestroyStage;
 
         public const byte PacketId = 0x25;
         public byte Id { get { return 0x25; } }
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readVarInt();
-            X = stream.readInt();
-            Y = stream.readInt();
-            Z = stream.readInt();
-            DestroyStage = stream.readSByte();
+            EntityID = stream.ReadVarInt();
+            X = stream.ReadInt();
+            Y = stream.ReadInt();
+            Z = stream.ReadInt();
+            DestroyStage = stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeInt(X);
-            stream.writeInt(Y);
-            stream.writeInt(Z);
-            stream.writeSByte(DestroyStage);
+            stream.WriteVarInt(Id);
+            stream.WriteVarInt(EntityID);
+            stream.WriteInt(X);
+            stream.WriteInt(Y);
+            stream.WriteInt(Z);
+            stream.WriteByte(DestroyStage);
             stream.Purge();
         }
     }

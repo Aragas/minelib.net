@@ -7,18 +7,18 @@ namespace MinecraftClient.Network.Packets.Client
     {
         public ClientStatus Status;
 
-        public const byte PacketId = 0xCD;
-        public byte Id { get { return 0xCD; } }
+        public const byte PacketId = 0x16;
+        public byte Id { get { return 0x16; } }
 
         public void ReadPacket(ref Wrapped stream)
         {
-            Status = (ClientStatus)stream.readByte();
+            Status = (ClientStatus)stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt((byte)Status);
+            stream.WriteVarInt(Id);
+            stream.WriteByte((byte)Status);
             stream.Purge();
         }
     }

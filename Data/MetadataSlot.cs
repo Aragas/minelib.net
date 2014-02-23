@@ -26,26 +26,26 @@ namespace MinecraftClient.Data
 
         public override void FromStream(ref Wrapped stream)
         {
-            //Value = ItemStack.FromStream(stream);
+            Value = ItemStack.FromStream(ref stream);
         }
 
         public override void WriteTo(ref Wrapped stream, byte index)
         {
-            stream.writeVarInt(GetKey(index));
-            stream.writeShort(Value.Id);
+            stream.WriteVarInt(GetKey(index));
+            stream.WriteShort(Value.Id);
             if (Value.Id != -1)
             {
-                stream.writeSByte(Value.Count);
-                stream.writeShort(Value.Metadata);
+                stream.WriteSByte(Value.Count);
+                stream.WriteShort(Value.Metadata);
                 if (Value.Nbt != null)
                 {
                     var file = new NbtFile(Value.Nbt);
                     var data = file.SaveToBuffer(NbtCompression.GZip);
-                    stream.writeShort((short)data.Length);
-                    //stream.writeVarIntArray(data);
+                    stream.WriteShort((short)data.Length);
+                    stream.WriteByteArray(data);
                 }
                 else
-                    stream.writeShort(-1);
+                    stream.WriteShort(-1);
             }
         }
     }

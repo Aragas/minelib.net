@@ -11,17 +11,17 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            X = stream.readInt();
-            Y = stream.readInt();
-            Z = stream.readInt();
+            X = stream.ReadInt();
+            Y = stream.ReadInt();
+            Z = stream.ReadInt();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(X);
-            stream.writeInt(Y);
-            stream.writeInt(Z);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(X);
+            stream.WriteInt(Y);
+            stream.WriteInt(Z);
             stream.Purge();
         }
     }

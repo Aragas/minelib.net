@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using MinecraftClient.Enums;
+using MinecraftClient.Network;
 using MinecraftClient.Network.Packets;
 
-//using libMC.NET.Common;
-//using libMC.NET.World;
-//using libMC.NET.Entities;
-
-// TODO: Comment more things
-// TODO: Speed things up, optimize code.
-
 // [Low]: Refactor packets to be universal for Server/Client, and be usable with proxies
+using MinecraftClient.Network.Packets.Server;
 
-namespace MinecraftClient.Network
+namespace MinecraftClient
 {
     /// <summary>
     /// Main class for libMC.Net, a Minecraft interaction library for .net languages.
@@ -43,7 +39,7 @@ namespace MinecraftClient.Network
             ClientName = username;
             ClientPassword = password;
             VerifyNames = nameVerification;
-            ClientBrand = "libMC.NET"; // -- Used in the plugin message reporting the client brand to the server.
+            ClientBrand = "MineLib.Net"; // -- Used in the plugin message reporting the client brand to the server.
         }
 
         /// <summary>
@@ -58,16 +54,10 @@ namespace MinecraftClient.Network
                 switch (result)
                 {
                     case YggdrasilStatus.Success:
-                        RaiseLoginSuccess(this);
-                        RaiseInfo(this, "Logged in to Minecraft.net successfully.");
-                        RaiseDebug(this, string.Format("Token: {0}\nProfile: {1}", AccessToken, SelectedProfile));
                         break;
 
                     default:
                         VerifyNames = false; // -- Fall back to no auth.
-
-                        RaiseLoginFailure(this, result.ToString());
-                        RaiseError(this, "Failed to login to Minecraft.net! (Incorrect username or password)");
                         break;
                 }
             }
@@ -95,10 +85,7 @@ namespace MinecraftClient.Network
 
                 return true;
             }
-            catch (WebException e)
-            {
-                return false;
-            }
+            catch (WebException) { return false; }
 
         }
 
@@ -108,24 +95,19 @@ namespace MinecraftClient.Network
             {
                 WebClient wClient = new WebClient();
                 wClient.Headers.Add("Content-Type: application/json");
+
                 string json = "{\"accessToken\": \"" + accessToken + "\"}";
                 string result = wClient.UploadString("https://authserver.mojang.com/validate", json);
 
-                {
-                    string[] temp = result.Split(new string[] { "accessToken\":\"" },
-                        StringSplitOptions.RemoveEmptyEntries);
-                    if (temp.Length >= 2)
-                    {
-                        accessToken = temp[1].Split('"')[0];
-                    }
+                string[] temp = result.Split(new string[] {"accessToken\":\""},
+                    StringSplitOptions.RemoveEmptyEntries);
+                if (temp.Length >= 2)
+                    accessToken = temp[1].Split('"')[0];
+                
 
-                    return true;
-                }
+                return true;
             }
-            catch (WebException)
-            {
-                return false;
-            }
+            catch (WebException) { return false; }
         }
 
         /// <summary>
@@ -134,21 +116,17 @@ namespace MinecraftClient.Network
         public bool RefreshSession()
         {
             if (AccessToken == null || ClientToken == null)
-            {
-                RaiseError(this, "Credentials are not set!");
                 return false;
-            }
+            
 
             YggdrasilStatus result = RefreshSession(ref AccessToken, ref ClientToken);
 
             switch (result)
             {
                 case YggdrasilStatus.Success:
-                    RaiseInfo(this, "Credentials verified and refreshed!");
                     return true;
 
                 default:
-                    RaiseError(this, "Unable to Verify Session!");
                     return false;
             }
 
@@ -165,21 +143,17 @@ namespace MinecraftClient.Network
             ClientToken = clientToken;
 
             if (AccessToken == null || ClientToken == null)
-            {
-                RaiseError(this, "Credentials are not set!");
                 return false;
-            }
+            
 
             YggdrasilStatus result = RefreshSession(ref AccessToken, ref ClientToken);
 
             switch (result)
             {
                 case YggdrasilStatus.Success:
-                    RaiseInfo(this, "Credentials verified and refreshed!");
                     return true;
 
                 default:
-                    RaiseError(this, "Unable to Verify Session!");
                     return false;
             }
 
@@ -203,16 +177,10 @@ namespace MinecraftClient.Network
             nh = new NetworkHandler(this);
 
             // -- Register our event handlers.
-            nh.InfoMessage += NetworkInfo;
-            nh.DebugMessage += NetworkDebug;
-            nh.SocketError += NetworkError;
-            nh.PacketHandled += RaisePacketHandled;
+            nh.OnPacketHandled += RaisePacketHandled;
 
             // -- Connect to the server and begin reading packets.
-
             nh.Start();
-
-            RaiseDebug(this, "Network handler created, Connecting to server...");
         }
 
         /// <summary>
@@ -222,10 +190,12 @@ namespace MinecraftClient.Network
         public void SendPacket(IPacket packet)
         {
             if (nh != null)
-            {
                 nh.Send(packet);
-            }
-            else RaiseError(this, "Connect first!");
+        }
+
+        public void SendChatMessage(string message)
+        {
+            nh.Send(new ChatMessagePacket {Message = message} );
         }
 
         /// <summary>
@@ -244,8 +214,6 @@ namespace MinecraftClient.Network
             //MinecraftWorld = null;
             //ThisPlayer = null;
             Players = null;
-
-            RaiseDebug(this, "Variables reset, disconnected from server.");
         }
 
     }

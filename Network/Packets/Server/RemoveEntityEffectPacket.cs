@@ -5,22 +5,22 @@ namespace MinecraftClient.Network.Packets.Server
     public struct RemoveEntityEffectPacket : IPacket
     {
         public int EntityID;
-        public sbyte EffectID;
+        public byte EffectID;
 
         public const byte PacketId = 0x1E;
         public byte Id { get { return 0x1E; } }
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readShort();
-            EffectID = stream.readSByte();
+            EntityID = stream.ReadInt();
+            EffectID = stream.ReadByte();
         }
 
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeInt(EntityID);
-            stream.writeSByte(EffectID);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteByte(EffectID);
             stream.Purge();
         }
     }

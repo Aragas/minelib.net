@@ -25,13 +25,13 @@ namespace MinecraftClient.Data
 
         public override void FromStream(ref Wrapped stream)
         {
-            Value = stream.readFloat();
+            Value = stream.ReadFloat();
         }
 
         public override void WriteTo(ref Wrapped stream, byte index)
         {
-            stream.writeVarInt(GetKey(index));
-            stream.writeFloat(Value);
+            stream.WriteVarInt(GetKey(index));
+            stream.WriteFloat(Value);
         }
     }
 }

@@ -17,23 +17,23 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.readInt();
-            GameMode = (GameMode)stream.readByte();
-            Dimension = (Dimension)stream.readSByte();
-            Difficulty = (Difficulty)stream.readByte();
-            MaxPlayers = stream.readByte();
-            LevelType = stream.readString();
+            EntityID = stream.ReadInt();
+            GameMode = (GameMode)stream.ReadByte();
+            Dimension = (Dimension)stream.ReadSByte();
+            Difficulty = (Difficulty)stream.ReadByte();
+            MaxPlayers = stream.ReadByte();
+            LevelType = stream.ReadString();
         }
     
         public void WritePacket(ref Wrapped stream)
         {
-            stream.writeVarInt(Id);
-            stream.writeVarInt(EntityID);
-            stream.writeVarInt((byte)GameMode);
-            stream.writeSByte((sbyte)Dimension);
-            stream.writeVarInt((byte)Difficulty);
-            stream.writeVarInt(MaxPlayers);
-            stream.writeString(LevelType);
+            stream.WriteVarInt(Id);
+            stream.WriteInt(EntityID);
+            stream.WriteVarInt((byte)GameMode);
+            stream.WriteSByte((sbyte)Dimension);
+            stream.WriteVarInt((byte)Difficulty);
+            stream.WriteByte(MaxPlayers);
+            stream.WriteString(LevelType);
             stream.Purge();
         }
     }
