@@ -18,7 +18,7 @@ namespace MinecraftClient
         {
             Client = new Minecraft("TestBot", "", false);
 
-            Client.OnPacketHandled += Client_PacketHandled;
+            Client.FirePacketHandled += Client_PacketHandled;
 
             Client.Login();
             Client.RefreshSession();

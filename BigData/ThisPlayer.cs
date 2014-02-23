@@ -7,6 +7,11 @@ namespace MinecraftClient.BigData
 {
     public class ThisPlayer
     {
+        public ThisPlayer()
+        {
+            Effects = new List<PlayerEffect>();
+            Windows = new List<PlayerWindow>();
+        }
 
         public PlayerPacket Packet()
         {

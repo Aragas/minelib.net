@@ -109,6 +109,8 @@
     <Compile Include="Enums\TeamMode.cs" />
     <Compile Include="Enums\YggdrasilStatus.cs" />
     <Compile Include="Minecraft.Client.cs" />
+    <Compile Include="Minecraft.PacketsHandler.cs" />
+    <Compile Include="Events\Events.cs" />
     <Compile Include="Network\Packets\Server\AnimationPacket.cs" />
     <Compile Include="Network\Packets\Server\AttachEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\BlockActionPacket.cs" />
@@ -125,7 +127,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BigData\ThisPlayer.cs" />
-    <Compile Include="Network\Events\MinecraftEvent.cs" />
     <Compile Include="Minecraft.cs" />
     <Compile Include="Minecraft.Events.cs" />
     <Compile Include="Minecraft.Yggdrasil.cs" />
