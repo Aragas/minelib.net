@@ -1,4 +1,3 @@
-using System;
 using CWrapped;
 using MinecraftClient.Data;
 

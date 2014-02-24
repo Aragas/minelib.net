@@ -203,6 +203,7 @@
     <Compile Include="Network\Packets\Server\StatisticsPacket.cs" />
     <Compile Include="Network\Packets\Server\TabCompletePacket.cs" />
     <Compile Include="Network\Packets\Server\TimeUpdatePacket.cs" />
+    <Compile Include="Network\Packets\Server\UpdateBlockEntity.cs" />
     <Compile Include="Network\Packets\Server\UpdateHealthPacket.cs" />
     <Compile Include="Network\Packets\Server\UpdateScorePacket.cs" />
     <Compile Include="Network\Packets\Server\UpdateSignPacket.cs" />

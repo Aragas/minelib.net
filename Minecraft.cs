@@ -169,7 +169,7 @@ namespace MinecraftClient
             ServerState = 0;
 
             World = null;
-            ThisPlayer = null;
+            Player = null;
             PlayerList = null;
             Entities = null;
         }

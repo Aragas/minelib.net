@@ -59,8 +59,8 @@ namespace MinecraftClient.Network.Packets
             () => new RemoveEntityEffectPacket(),           // 0x1E
             () => new SetExperiencePacket(),                // 0x1F
             () => new EntityPropertiesPacket(),             // 0x20
-            () => new ChunkDataPacket(),                    // 0x21 //Not checked yet
-            () => new MultiBlockChangePacket(),             // 0x22
+            () => new ChunkDataPacket(),                    // 0x21
+            null,//() => new MultiBlockChangePacket(),             // 0x22 // Not working
             () => new BlockChangePacket(),                  // 0x23
             () => new BlockActionPacket(),                  // 0x24
             () => new BlockBreakAnimationPacket(),          // 0x25
@@ -78,8 +78,8 @@ namespace MinecraftClient.Network.Packets
             () => new WindowPropertyPacket(),               // 0x31
             () => new ConfirmTransactionPacket(),           // 0x32
             () => new UpdateSignPacket(),                   // 0x33
-            () => new MapsPacket(),                         // 0x34 // Not checked
-            () => new MultiBlockChangePacket(),             // 0x35
+            () => new MapsPacket(),                         // 0x34 
+            () => new UpdateBlockEntityPacket(),            // 0x35 // Not working
             () => new SignEditorOpenPacket(),               // 0x36
             () => new StatisticsPacket(),                   // 0x37
             () => new PlayerListItemPacket(),               // 0x38

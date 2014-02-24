@@ -330,12 +330,13 @@ namespace MinecraftClient
 
             if (Player.EntityID == EntityEffect.EntityID)
             {
-                Player.Effects.Add(EntityEffect.EntityID, new PlayerEffect
-                {
-                    EffectID = EntityEffect.EffectID,
-                    Amplifier = EntityEffect.Amplifier,
-                    Duration = EntityEffect.Duration
-                });
+                if (!Player.Effects.ContainsKey(EntityEffect.EffectID))
+                    Player.Effects.Add(EntityEffect.EffectID, new PlayerEffect
+                    {
+                        EffectID = EntityEffect.EffectID,
+                        Amplifier = EntityEffect.Amplifier,
+                        Duration = EntityEffect.Duration
+                    });
             }
             else
             {

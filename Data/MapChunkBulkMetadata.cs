@@ -6,5 +6,6 @@
         public int ChunkZ;
         public short PrimaryBitMap;
         public short AddBitMap;
+        public bool SkyLight;
     }
 }
