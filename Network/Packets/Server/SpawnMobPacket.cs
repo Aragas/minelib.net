@@ -1,10 +1,11 @@
 using CWrapped;
 using MinecraftClient.Data;
+using MinecraftClient.Data.EntityMetadata;
 using MinecraftClient.Enums;
 
 namespace MinecraftClient.Network.Packets.Server
 {
-    public struct BSpawnMobPacket : IPacket
+    public struct SpawnMobPacket : IPacket
     {
         public int EntityID;
         public Mobs Type;
@@ -18,7 +19,7 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.ReadShort();
+            EntityID = stream.ReadVarInt();
             Type = (Mobs)stream.ReadByte();
             X = stream.ReadInt();
             Y = stream.ReadInt();

@@ -6,4 +6,5 @@
         Sidebar         = 1,
         BelowPlayerName = 2
     }
+
 }

@@ -1,18 +1,10 @@
 ﻿using CWrapped;
 
-namespace MinecraftClient.Data
+namespace MinecraftClient.Data.EntityMetadata
 {
     public class MetadataFloat : MetadataEntry
     {
-        public override byte Identifier { get { return 3; } }
-        public override string FriendlyName { get { return "float"; } }
-
         public float Value;
-
-        public static implicit operator MetadataFloat(float value)
-        {
-            return new MetadataFloat(value);
-        }
 
         public MetadataFloat()
         {
@@ -23,6 +15,21 @@ namespace MinecraftClient.Data
             Value = value;
         }
 
+        public override byte Identifier
+        {
+            get { return 3; }
+        }
+
+        public override string FriendlyName
+        {
+            get { return "float"; }
+        }
+
+        public static implicit operator MetadataFloat(float value)
+        {
+            return new MetadataFloat(value);
+        }
+
         public override void FromStream(ref Wrapped stream)
         {
             Value = stream.ReadFloat();
@@ -30,7 +37,7 @@ namespace MinecraftClient.Data
 
         public override void WriteTo(ref Wrapped stream, byte index)
         {
-            stream.WriteVarInt(GetKey(index));
+            stream.WriteByte(GetKey(index));
             stream.WriteFloat(Value);
         }
     }

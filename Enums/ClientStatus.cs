@@ -5,4 +5,5 @@
         InitialSpawn    = 0,
         Respawn         = 1
     }
+
 }

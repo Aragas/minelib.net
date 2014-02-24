@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using MinecraftClient.BigData;
 using MinecraftClient.Enums;
 using MinecraftClient.Network;
@@ -21,7 +20,7 @@ namespace MinecraftClient
 
         public World World; // -- Holds all of the world information. Time, chunks, ect.
         public ThisPlayer Player;
-        public Player ThisPlayer; // -- Holds all user information, location, inventory and so on.
+        //public Player ThisPlayer; // -- Holds all user information, location, inventory and so on.
         public Dictionary<string, short> PlayerList;
         public Dictionary<int, Entity> Entities;
 
@@ -46,7 +45,7 @@ namespace MinecraftClient
         {
             if (VerifyNames)
             {
-                YggdrasilStatus result = LoginAuthServer(ref ClientName, ClientPassword, ref AccessToken,
+                YggdrasilStatus result = Yggdrasil.LoginAuthServer(ref ClientName, ClientPassword, ref AccessToken,
                     ref ClientToken, ref SelectedProfile);
 
                 switch (result)
@@ -76,7 +75,7 @@ namespace MinecraftClient
                 return false;
 
 
-            YggdrasilStatus result = RefreshSession(ref AccessToken, ref ClientToken);
+            YggdrasilStatus result = Yggdrasil.RefreshSession(ref AccessToken, ref ClientToken);
 
             switch (result)
             {
@@ -102,7 +101,7 @@ namespace MinecraftClient
                 return false;
 
 
-            YggdrasilStatus result = RefreshSession(ref AccessToken, ref ClientToken);
+            YggdrasilStatus result = Yggdrasil.RefreshSession(ref AccessToken, ref ClientToken);
 
             switch (result)
             {
@@ -127,6 +126,7 @@ namespace MinecraftClient
             if (nh != null)
                 Disconnect();
 
+            World = new World();
             Player = new ThisPlayer();
             PlayerList = new Dictionary<string, short>();
             Entities = new Dictionary<int, Entity>(); 

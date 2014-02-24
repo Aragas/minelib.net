@@ -1,6 +1,6 @@
 ﻿namespace MinecraftClient.Data
 {
-    public struct Metadata
+    public struct MapChunkBulkMetadata
     {
         public int ChunkX;
         public int ChunkZ;

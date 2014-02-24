@@ -3,9 +3,9 @@ using System.IO;
 using System.Net;
 using MinecraftClient.Enums;
 
-namespace MinecraftClient
+namespace MinecraftClient.Network
 {
-    public partial class Minecraft
+    public static class Yggdrasil
     {
         /// <summary>
         /// Allows to login to a premium Minecraft account using the Yggdrasil authentication scheme.
@@ -16,7 +16,7 @@ namespace MinecraftClient
         /// <param name="clientToken"></param>
         /// <param name="uuid">Will contain the player's UUID, needed for multiplayer</param>
         /// <returns>Returns the status of the login (Success, Failure, etc.)</returns>
-        private static YggdrasilStatus LoginAuthServer(ref string username, string password, ref string accessToken,
+        public static YggdrasilStatus LoginAuthServer(ref string username, string password, ref string accessToken,
             ref string clientToken, ref string uuid)
         {
             try
@@ -33,13 +33,13 @@ namespace MinecraftClient
                 }
 
                 {
-                    string[] temp = result.Split(new string[] {"accessToken\":\""}, StringSplitOptions.RemoveEmptyEntries);
+                    string[] temp = result.Split(new string[] { "accessToken\":\"" }, StringSplitOptions.RemoveEmptyEntries);
                     if (temp.Length >= 2) { accessToken = temp[1].Split('"')[0]; }
-                    temp = result.Split(new string[] {"clientToken\":\""}, StringSplitOptions.RemoveEmptyEntries);
+                    temp = result.Split(new string[] { "clientToken\":\"" }, StringSplitOptions.RemoveEmptyEntries);
                     if (temp.Length >= 2) { clientToken = temp[1].Split('"')[0]; }
-                    temp = result.Split(new string[] {"name\":\""}, StringSplitOptions.RemoveEmptyEntries);
+                    temp = result.Split(new string[] { "name\":\"" }, StringSplitOptions.RemoveEmptyEntries);
                     if (temp.Length >= 2) { username = temp[1].Split('"')[0]; }
-                    temp = result.Split(new string[] {"availableProfiles\":[{\"id\":\""}, StringSplitOptions.RemoveEmptyEntries);
+                    temp = result.Split(new string[] { "availableProfiles\":[{\"id\":\"" }, StringSplitOptions.RemoveEmptyEntries);
                     if (temp.Length >= 2) { uuid = temp[1].Split('"')[0]; }
                 }
 
@@ -49,8 +49,8 @@ namespace MinecraftClient
             {
                 if (e.Status == WebExceptionStatus.ProtocolError)
                 {
-                    HttpWebResponse response = (HttpWebResponse) e.Response;
-                    if ((int) response.StatusCode == 403)
+                    HttpWebResponse response = (HttpWebResponse)e.Response;
+                    if ((int)response.StatusCode == 403)
                     {
                         using (StreamReader sr = new StreamReader(response.GetResponseStream()))
                         {
@@ -68,7 +68,7 @@ namespace MinecraftClient
             }
         }
 
-        private static YggdrasilStatus RefreshSession(ref string accesstoken, ref string clienttoken)
+        public static YggdrasilStatus RefreshSession(ref string accesstoken, ref string clienttoken)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace MinecraftClient
 
         }
 
-        public bool VerifyName(string accessToken, string selectedProfile, string serverHash)
+        public static bool VerifyName(string accessToken, string selectedProfile, string serverHash)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace MinecraftClient
             catch (WebException) { return false; }
         }
 
-        public bool VerifySession(string accessToken)
+        public static bool VerifySession(string accessToken)
         {
             try
             {

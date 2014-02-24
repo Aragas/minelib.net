@@ -1,19 +1,11 @@
 ﻿using CWrapped;
 using fNbt;
 
-namespace MinecraftClient.Data
+namespace MinecraftClient.Data.EntityMetadata
 {
     public class MetadataSlot : MetadataEntry
     {
-        public override byte Identifier { get { return 5; } }
-        public override string FriendlyName { get { return "slot"; } }
-
         public ItemStack Value;
-
-        public static implicit operator MetadataSlot(ItemStack value)
-        {
-            return new MetadataSlot(value);
-        }
 
         public MetadataSlot()
         {
@@ -24,6 +16,21 @@ namespace MinecraftClient.Data
             Value = value;
         }
 
+        public override byte Identifier
+        {
+            get { return 5; }
+        }
+
+        public override string FriendlyName
+        {
+            get { return "slot"; }
+        }
+
+        public static implicit operator MetadataSlot(ItemStack value)
+        {
+            return new MetadataSlot(value);
+        }
+
         public override void FromStream(ref Wrapped stream)
         {
             Value = ItemStack.FromStream(ref stream);
@@ -31,7 +38,7 @@ namespace MinecraftClient.Data
 
         public override void WriteTo(ref Wrapped stream, byte index)
         {
-            stream.WriteVarInt(GetKey(index));
+            stream.WriteByte(GetKey(index));
             stream.WriteShort(Value.Id);
             if (Value.Id != -1)
             {
@@ -40,7 +47,7 @@ namespace MinecraftClient.Data
                 if (Value.Nbt != null)
                 {
                     var file = new NbtFile(Value.Nbt);
-                    var data = file.SaveToBuffer(NbtCompression.GZip);
+                    byte[] data = file.SaveToBuffer(NbtCompression.GZip);
                     stream.WriteShort((short)data.Length);
                     stream.WriteByteArray(data);
                 }

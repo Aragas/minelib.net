@@ -14,24 +14,27 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            EntityID = stream.ReadShort();
-            var count = stream.ReadShort();
+            EntityID = stream.ReadInt();
+            var count = stream.ReadInt();
             if (count < 0)
                 throw new InvalidOperationException("Cannot specify less than zero properties.");
             Properties = new EntityProperty[count];
             for (int i = 0; i < count; i++)
             {
-                var property = new EntityProperty();
-                property.Key = stream.ReadString();
-                property.Value = stream.ReadDouble();
+                var property = new EntityProperty { Key = stream.ReadString(), Value = stream.ReadDouble() };
+
                 var listLength = stream.ReadShort();
                 property.UnknownList = new EntityPropertyListItem[listLength];
                 for (int j = 0; j < listLength; j++)
                 {
-                    var item = new EntityPropertyListItem();
-                    item.UUID = stream.ReadLong();
-                    item.Amount = stream.ReadDouble();
-                    item.Operation = stream.ReadByte();
+                    var item = new EntityPropertyListItem
+                    {
+                        UnknownMSB = stream.ReadLong(),
+                        UnknownLSB = stream.ReadLong(),
+                        UnknownDouble = stream.ReadDouble(),
+                        UnknownByte = stream.ReadByte()
+                    };
+
                     property.UnknownList[j] = item;
                 }
                 Properties[i] = property;
@@ -41,8 +44,8 @@ namespace MinecraftClient.Network.Packets.Server
         public void WritePacket(ref Wrapped stream)
         {
             stream.WriteVarInt(Id);
-            stream.WriteVarInt(EntityID);
-            stream.WriteVarInt(Properties.Length);
+            stream.WriteInt(EntityID);
+            stream.WriteInt(Properties.Length);
             for (int i = 0; i < Properties.Length; i++)
             {
                 stream.WriteString(Properties[i].Key);
@@ -50,9 +53,10 @@ namespace MinecraftClient.Network.Packets.Server
                 stream.WriteShort((short)Properties[i].UnknownList.Length);
                 for (int j = 0; j < Properties[i].UnknownList.Length; j++)
                 {
-                    stream.WriteLong(Properties[i].UnknownList[j].UUID);
-                    stream.WriteDouble(Properties[i].UnknownList[j].Amount);
-                    stream.WriteByte(Properties[i].UnknownList[j].Operation);
+                    stream.WriteLong(Properties[i].UnknownList[j].UnknownMSB);
+                    stream.WriteLong(Properties[i].UnknownList[j].UnknownLSB);
+                    stream.WriteDouble(Properties[i].UnknownList[j].UnknownDouble);
+                    stream.WriteByte(Properties[i].UnknownList[j].UnknownByte);
                 }
             }
             stream.Purge();

@@ -6,18 +6,18 @@ namespace MinecraftClient.Network.Packets.Server
     {
         public int ChunkX, ChunkZ;
         public short RecordCount;
-        public byte[] Data;
+        public int[] Data;
 
         public const byte PacketId = 0x22;
         public byte Id { get { return 0x22; } }
 
         public void ReadPacket(ref Wrapped stream)
         {
-            ChunkX = stream.ReadInt();
-            ChunkZ = stream.ReadInt();
+            ChunkX = stream.ReadShort();
+            ChunkZ = stream.ReadShort();
             RecordCount = stream.ReadShort();
-            int length = stream.ReadInt();
-            Data = stream.ReadByteArray(length);
+            int size = stream.ReadInt();
+            Data = stream.ReadIntArray(size);
         }
 
         public void WritePacket(ref Wrapped stream)
@@ -27,7 +27,7 @@ namespace MinecraftClient.Network.Packets.Server
             stream.WriteInt(ChunkZ);
             stream.WriteShort(RecordCount);
             stream.WriteInt(RecordCount * 4);
-            stream.WriteByteArray(Data);
+            stream.WriteIntArray(Data);
             stream.Purge();
         }
     }

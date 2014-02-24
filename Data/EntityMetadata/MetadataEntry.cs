@@ -2,17 +2,16 @@
 using System.Reflection;
 using CWrapped;
 
-namespace MinecraftClient.Data
+namespace MinecraftClient.Data.EntityMetadata
 {
     public abstract class MetadataEntry
     {
         public abstract byte Identifier { get; }
         public abstract string FriendlyName { get; }
+        internal byte Index { get; set; }
 
         public abstract void FromStream(ref Wrapped stream);
         public abstract void WriteTo(ref Wrapped stream, byte index);
-
-        internal byte Index { get; set; }
 
         public static implicit operator MetadataEntry(byte value)
         {

@@ -1,9 +1,10 @@
 using CWrapped;
 using MinecraftClient.Data;
+using MinecraftClient.Data.EntityMetadata;
 
 namespace MinecraftClient.Network.Packets.Server
 {
-    public struct BSpawnPlayerPacket : IPacket
+    public struct SpawnPlayerPacket : IPacket
     {
         public int EntityID;
         public string PlayerUUID, PlayerName;
@@ -27,6 +28,7 @@ namespace MinecraftClient.Network.Packets.Server
             Pitch = stream.ReadByte();
             CurrentItem = stream.ReadShort();
             Metadata = MetadataDictionary.FromStream(ref stream);
+
         }
     
         public void WritePacket(ref Wrapped stream)

@@ -4,7 +4,7 @@ namespace MinecraftClient.Network.Packets.Server
 {
     public struct ExplosionPacket : IPacket
     {
-        public double X, Y, Z;
+        public float X, Y, Z;
         public float Radius;
         public int RecordCount;
         public byte[] Records;
@@ -15,9 +15,9 @@ namespace MinecraftClient.Network.Packets.Server
 
         public void ReadPacket(ref Wrapped stream)
         {
-            X = stream.ReadDouble();
-            Y = stream.ReadDouble();
-            Z = stream.ReadDouble();
+            X = stream.ReadFloat();
+            Y = stream.ReadFloat();
+            Z = stream.ReadFloat();
             Radius = stream.ReadFloat();
             RecordCount = stream.ReadInt();
             Records = stream.ReadByteArray(RecordCount * 3);
@@ -29,9 +29,9 @@ namespace MinecraftClient.Network.Packets.Server
         public void WritePacket(ref Wrapped stream)
         {
             stream.WriteVarInt(Id);
-            stream.WriteDouble(X);
-            stream.WriteDouble(Y);
-            stream.WriteDouble(Z);
+            stream.WriteFloat(X);
+            stream.WriteFloat(Y);
+            stream.WriteFloat(Z);
             stream.WriteFloat(Radius);
             stream.WriteInt(RecordCount);
             stream.WriteByteArray(Records);

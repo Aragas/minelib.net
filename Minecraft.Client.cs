@@ -14,5 +14,14 @@
 
         }
 
+        private void DisplayChatMessage(string message)
+        {
+            
+        }
+
+        private void EditSign(int x, int y, int z)
+        {
+            
+        }
     }
 }

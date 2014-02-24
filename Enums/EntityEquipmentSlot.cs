@@ -5,4 +5,5 @@
             HeldItem = 0,
             Footwear = 4
         }
+
 }

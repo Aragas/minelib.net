@@ -2,8 +2,9 @@
 {
     public enum ChatMode
     {
-        Hidden          = 2,
+        Enabled         = 0,
         CommandsOnly    = 1,
-        Enabled         = 0
+        Hidden          = 2
     }
+
 }

@@ -5,7 +5,7 @@ namespace MinecraftClient.Network.Packets.Server
 {
     public struct ChangeGameStatePacket : IPacket
     {
-        public GameState Reason;
+        public GameStateReason Reason;
         public float Value; // Was GameMode
     
         public const byte PacketId = 0x2B;
@@ -13,7 +13,7 @@ namespace MinecraftClient.Network.Packets.Server
     
         public void ReadPacket(ref Wrapped stream)
         {
-            Reason = (GameState)stream.ReadByte();
+            Reason = (GameStateReason)stream.ReadByte();
             Value = stream.ReadFloat();
         }
     

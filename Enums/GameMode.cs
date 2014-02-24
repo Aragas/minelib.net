@@ -6,4 +6,5 @@
         Creative    = 1,
         Adventure   = 2
     }
+
 }

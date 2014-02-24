@@ -1,9 +1,10 @@
 using CWrapped;
 using MinecraftClient.Data;
+using MinecraftClient.Data.EntityMetadata;
 
 namespace MinecraftClient.Network.Packets.Server
 {
-    public struct BEntityMetadataPacket : IPacket
+    public struct EntityMetadataPacket : IPacket
     {
         public int EntityID;
         public MetadataDictionary Metadata;

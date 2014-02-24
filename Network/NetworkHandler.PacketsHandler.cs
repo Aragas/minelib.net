@@ -1,20 +1,18 @@
-﻿using System.Collections.Generic;
-using MinecraftClient.Enums;
+﻿using MinecraftClient.Enums;
 using MinecraftClient.Network.Packets;
 
-namespace MinecraftClient
+namespace MinecraftClient.Network
 {
-    public partial class Minecraft
+    public partial class NetworkHandler
     {
-        public bool Ready;
-
-        List<IPacket> packets = new List<IPacket>();
-
-        void RaisePacketHandled(object sender, IPacket packet, int id, ServerState state)
+        private void RaisePacketHandled(object sender, IPacket packet, int id, ServerState state)
         {
-            packets.Add(packet);
-            Ready = true;
+            if (OnPacketHandled != null)
+                OnPacketHandled(sender, packet, id, state);
+        }
 
+        private void RaisePacketHandledUnUsed(object sender, IPacket packet, int id, ServerState state)
+        {
             switch (state)
             {
                 case Enums.ServerState.Login:
@@ -26,265 +24,265 @@ namespace MinecraftClient
                     switch ((PacketServer)id)
                     {
                         case PacketServer.KeepAlive:
-                            OnKeepAlive(packet);
+                            FireKeepAlive(packet);
                             break;
 
                         case PacketServer.JoinGame:
-                            OnJoinGame(packet);
+                            FireJoinGame(packet);
                             break;
 
                         case PacketServer.ChatMessage:
-                            OnChatMessage(packet);
+                            FireChatMessage(packet);
                             break;
 
                         case PacketServer.TimeUpdate:
-                            OnTimeUpdate(packet);
+                            FireTimeUpdate(packet);
                             break;
 
                         case PacketServer.EntityEquipment:
-                            OnEntityEquipment(packet);
+                            FireEntityEquipment(packet);
                             break;
 
                         case PacketServer.SpawnPosition:
-                            OnSpawnPosition(packet);
+                            FireSpawnPosition(packet);
                             break;
 
                         case PacketServer.UpdateHealth:
-                            OnUpdateHealth(packet);
+                            FireUpdateHealth(packet);
                             break;
 
                         case PacketServer.Respawn:
-                            OnRespawn(packet);
+                            FireRespawn(packet);
                             break;
 
                         case PacketServer.PlayerPositionAndLook:
-                            OnPlayerPositionAndLook(packet);
+                            FirePlayerPositionAndLook(packet);
                             break;
 
                         case PacketServer.HeldItemChange:
-                            OnHeldItemChange(packet);
+                            FireHeldItemChange(packet);
                             break;
 
                         case PacketServer.UseBed:
-                            OnUseBed(packet);
+                            FireUseBed(packet);
                             break;
 
                         case PacketServer.Animation:
-                            OnAnimation(packet);
+                            FireAnimation(packet);
                             break;
 
                         case PacketServer.SpawnPlayer:
-                            OnSpawnPlayer(packet);
+                            FireSpawnPlayer(packet);
                             break;
 
                         case PacketServer.CollectItem:
-                            OnCollectItem(packet);
+                            FireCollectItem(packet);
                             break;
 
                         case PacketServer.SpawnObject:
-                            OnSpawnObject(packet);
+                            FireSpawnObject(packet);
                             break;
 
                         case PacketServer.SpawnMob:
-                            OnSpawnMob(packet);
+                            FireSpawnMob(packet);
                             break;
 
                         case PacketServer.SpawnPainting:
-                            OnSpawnPainting(packet);
+                            FireSpawnPainting(packet);
                             break;
 
                         case PacketServer.SpawnExperienceOrb:
-                            OnSpawnExperienceOrb(packet);
+                            FireSpawnExperienceOrb(packet);
                             break;
 
                         case PacketServer.EntityVelocity:
-                            OnEntityVelocity(packet);
+                            FireEntityVelocity(packet);
                             break;
 
                         case PacketServer.DestroyEntities:
-                            OnDestroyEntities(packet);
+                            FireDestroyEntities(packet);
                             break;
 
                         case PacketServer.Entity:
-                            OnEntity(packet);
+                            FireEntity(packet);
                             break;
 
                         case PacketServer.EntityRelativeMove:
-                            OnEntityRelativeMove(packet);
+                            FireEntityRelativeMove(packet);
                             break;
 
                         case PacketServer.EntityLook:
-                            OnEntityLook(packet);
+                            FireEntityLook(packet);
                             break;
 
                         case PacketServer.EntityLookAndRelativeMove:
-                            OnEntityLookAndRelativeMove(packet);
+                            FireEntityLookAndRelativeMove(packet);
                             break;
 
                         case PacketServer.EntityTeleport:
-                            OnEntityTeleport(packet);
+                            FireEntityTeleport(packet);
                             break;
 
                         case PacketServer.EntityHeadLook:
-                            OnEntityHeadLook(packet);
+                            FireEntityHeadLook(packet);
                             break;
 
                         case PacketServer.EntityStatus:
-                            OnEntityStatus(packet);
+                            FireEntityStatus(packet);
                             break;
 
                         case PacketServer.AttachEntity:
-                            OnAttachEntity(packet);
+                            FireAttachEntity(packet);
                             break;
 
                         case PacketServer.EntityMetadata:
-                            OnEntityMetadata(packet);
+                            FireEntityMetadata(packet);
                             break;
 
                         case PacketServer.EntityEffect:
-                            OnEntityEffect(packet);
+                            FireEntityEffect(packet);
                             break;
 
                         case PacketServer.RemoveEntityEffect:
-                            OnRemoveEntityEffect(packet);
+                            FireRemoveEntityEffect(packet);
                             break;
 
                         case PacketServer.SetExperience:
-                            OnSetExperience(packet);
+                            FireSetExperience(packet);
                             break;
 
                         case PacketServer.EntityProperties:
-                            OnEntityProperties(packet);
+                            FireEntityProperties(packet);
                             break;
 
                         case PacketServer.ChunkData:
-                            OnChunkData(packet);
+                            FireChunkData(packet);
                             break;
 
                         case PacketServer.MultiBlockChange:
-                            OnMultiBlockChange(packet);
+                            FireMultiBlockChange(packet);
                             break;
 
                         case PacketServer.BlockChange:
-                            OnBlockChange(packet);
+                            FireBlockChange(packet);
                             break;
 
                         case PacketServer.BlockAction:
-                            OnBlockAction(packet);
+                            FireBlockAction(packet);
                             break;
 
                         case PacketServer.BlockBreakAnimation:
-                            OnBlockBreakAnimation(packet);
+                            FireBlockBreakAnimation(packet);
                             break;
 
                         case PacketServer.MapChunkBulk:
-                            OnMapChunkBulk(packet);
+                            FireMapChunkBulk(packet);
                             break;
 
                         case PacketServer.Explosion:
-                            OnExplosion(packet);
+                            FireExplosion(packet);
                             break;
 
                         case PacketServer.Effect:
-                            OnEffect(packet);
+                            FireEffect(packet);
                             break;
 
                         case PacketServer.SoundEffect:
-                            OnSoundEffect(packet);
+                            FireSoundEffect(packet);
                             break;
 
                         case PacketServer.Particle:
-                            OnParticle(packet);
+                            FireParticle(packet);
                             break;
 
                         case PacketServer.ChangeGameState:
-                            OnChangeGameState(packet);
+                            FireChangeGameState(packet);
                             break;
 
                         case PacketServer.SpawnGlobalEntity:
-                            OnSpawnGlobalEntity(packet);
+                            FireSpawnGlobalEntity(packet);
                             break;
 
                         case PacketServer.OpenWindow:
-                            OnOpenWindow(packet);
+                            FireOpenWindow(packet);
                             break;
 
                         case PacketServer.CloseWindow:
-                            OnCloseWindow(packet);
+                            FireCloseWindow(packet);
                             break;
 
                         case PacketServer.SetSlot:
-                            OnSetSlot(packet);
+                            FireSetSlot(packet);
                             break;
 
                         case PacketServer.WindowItems:
-                            OnWindowItems(packet);
+                            FireWindowItems(packet);
                             break;
 
                         case PacketServer.WindowProperty:
-                            OnWindowProperty(packet);
+                            FireWindowProperty(packet);
                             break;
 
                         case PacketServer.ConfirmTransaction:
-                            OnConfirmTransaction(packet);
+                            FireConfirmTransaction(packet);
                             break;
 
                         case PacketServer.UpdateSign:
-                            OnUpdateSign(packet);
+                            FireUpdateSign(packet);
                             break;
 
                         case PacketServer.Maps:
-                            OnMaps(packet);
+                            FireMaps(packet);
                             break;
 
                         case PacketServer.UpdateBlockEntity:
-                            OnUpdateBlockEntity(packet);
+                            FireUpdateBlockEntity(packet);
                             break;
 
                         case PacketServer.SignEditorOpen:
-                            OnSignEditorOpen(packet);
+                            FireSignEditorOpen(packet);
                             break;
 
                         case PacketServer.Statistics:
-                            OnStatistics(packet);
+                            FireStatistics(packet);
                             break;
 
                         case PacketServer.PlayerListItem:
-                            OnPlayerListItem(packet);
+                            FirePlayerListItem(packet);
                             break;
 
                         case PacketServer.PlayerAbilities:
-                            OnPlayerAbilities(packet);
+                            FirePlayerAbilities(packet);
                             break;
 
                         case PacketServer.TabComplete:
-                            OnTabComplete(packet);
+                            FireTabComplete(packet);
                             break;
 
                         case PacketServer.ScoreboardObjective:
-                            OnScoreboardObjective(packet);
+                            FireScoreboardObjective(packet);
                             break;
 
                         case PacketServer.UpdateScore:
-                            OnUpdateScore(packet);
+                            FireUpdateScore(packet);
                             break;
 
                         case PacketServer.DisplayScoreboard:
-                            OnDisplayScoreboard(packet);
+                            FireDisplayScoreboard(packet);
                             break;
 
                         case PacketServer.Teams:
-                            OnTeams(packet);
+                            FireTeams(packet);
                             break;
 
                         case PacketServer.PluginMessage:
-                            OnPluginMessage(packet);
+                            FirePluginMessage(packet);
                             break;
 
                         case PacketServer.Disconnect:
-                            OnDisconnect(packet);
+                            FireDisconnect(packet);
                             break;
-                        }
+                    }
                     #endregion
 
                     break;
@@ -293,8 +291,8 @@ namespace MinecraftClient
                     break;
 
                 default:
-                    if (FirePacketHandled != null)
-                        FirePacketHandled(sender, packet, id, state);
+                    if (OnPacketHandled != null)
+                        OnPacketHandled(sender, packet, id, state);
                     break;
             }
 

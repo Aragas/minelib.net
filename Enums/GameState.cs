@@ -1,7 +1,8 @@
 ﻿namespace MinecraftClient.Enums
 {
-    public enum GameState
+    public enum GameStateReason
     {
+        Nothing,
         InvalidBed          = 0,
         EndRaining          = 1,
         BeginRaining        = 2,

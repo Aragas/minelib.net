@@ -36,13 +36,12 @@ namespace MinecraftClient
 
             Client.SendPacket(new LoginStartPacket { Name = "TestBot" });
 
-            while (!Client.Ready) { }
+            //while (!Client.Ready) { }
 
-            Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.InitialSpawn} );
+            //Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.InitialSpawn} );
             //Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.Respawn });
 
             //Client.SendPacket(new ClientStatusPacket { Status = ClientStatus.InitialSpawn} );
-
 
             while (true)
             {

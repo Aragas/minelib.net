@@ -1,19 +1,11 @@
 ﻿using System;
 using CWrapped;
 
-namespace MinecraftClient.Data
+namespace MinecraftClient.Data.EntityMetadata
 {
     public class MetadataString : MetadataEntry
     {
-        public override byte Identifier { get { return 4; } }
-        public override string FriendlyName { get { return "string"; } }
-
         public string Value;
-
-        public static implicit operator MetadataString(string value)
-        {
-            return new MetadataString(value);
-        }
 
         public MetadataString()
         {
@@ -28,6 +20,21 @@ namespace MinecraftClient.Data
             Value = value;
         }
 
+        public override byte Identifier
+        {
+            get { return 4; }
+        }
+
+        public override string FriendlyName
+        {
+            get { return "string"; }
+        }
+
+        public static implicit operator MetadataString(string value)
+        {
+            return new MetadataString(value);
+        }
+
         public override void FromStream(ref Wrapped stream)
         {
             Value = stream.ReadString();
@@ -35,7 +42,7 @@ namespace MinecraftClient.Data
 
         public override void WriteTo(ref Wrapped stream, byte index)
         {
-            stream.WriteVarInt(GetKey(index));
+            stream.WriteByte(GetKey(index));
             stream.WriteString(Value);
         }
     }

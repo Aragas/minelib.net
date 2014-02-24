@@ -173,7 +173,7 @@ namespace MinecraftClient.Data
         private sbyte _Count;
         private short _Metadata;
 
-        //[IgnoreOnNull]
+        //[IgnoreOnNull] // Why it don't work?
         public NbtCompound Nbt { get; set; }
         [NbtIgnore]
         public int Index;

@@ -68,23 +68,28 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Anvil\Block.cs" />
+    <Compile Include="Data\Anvil\Chunk.cs" />
+    <Compile Include="Data\Anvil\Decompressor.cs" />
+    <None Include="Note" />
+    <Compile Include="Data\Anvil\Section.cs" />
+    <Compile Include="BigData\World.cs" />
     <Compile Include="BigData\Entity.cs" />
     <Compile Include="BigData\Object.cs" />
-    <Compile Include="BigData\World.cs" />
+    <Compile Include="BigData\Vehile.cs" />
     <Compile Include="Data\EntityProperty.cs" />
     <Compile Include="Data\EntityPropertyListItem.cs" />
     <Compile Include="Data\Size.cs" />
     <Compile Include="Data\SlotData.cs" />
-    <Compile Include="Data\MetadadaShort.cs" />
-    <Compile Include="Data\Metadata.cs" />
-    <Compile Include="Data\MetadataByte.cs" />
-    <Compile Include="Data\MetadataDictionary.cs" />
-    <Compile Include="Data\MetadataEntry.cs" />
-    <Compile Include="Data\MetadataFloat.cs" />
-    <Compile Include="Data\MetadataInt.cs" />
-    <Compile Include="Data\MetadataSlot.cs" />
-    <Compile Include="Data\MetadataString.cs" />
-    <Compile Include="Data\ObjectData.cs" />
+    <Compile Include="Data\EntityMetadata\MetadadaShort.cs" />
+    <Compile Include="Data\MapChunkBulkMetadata.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataByte.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataDictionary.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataEntry.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataFloat.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataInt.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataSlot.cs" />
+    <Compile Include="Data\EntityMetadata\MetadataString.cs" />
     <Compile Include="Data\Vector3.cs" />
     <Compile Include="Enums\Animation.cs" />
     <Compile Include="Enums\Blocks.cs" />
@@ -104,6 +109,7 @@
     <Compile Include="Enums\Mobs.cs" />
     <Compile Include="Enums\NextState.cs" />
     <Compile Include="Enums\Objects.cs" />
+    <Compile Include="Enums\PlayerAbilities.cs" />
     <Compile Include="Enums\ScoreboardPosition.cs" />
     <Compile Include="Enums\ServerState.cs" />
     <Compile Include="Enums\TeamMode.cs" />
@@ -111,6 +117,7 @@
     <Compile Include="Minecraft.Client.cs" />
     <Compile Include="Minecraft.PacketsHandler.cs" />
     <Compile Include="Events\Events.cs" />
+    <Compile Include="Network\NetworkHandler.PacketsHandler.cs" />
     <Compile Include="Network\Packets\Server\AnimationPacket.cs" />
     <Compile Include="Network\Packets\Server\AttachEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\BlockActionPacket.cs" />
@@ -129,7 +136,6 @@
     <Compile Include="BigData\ThisPlayer.cs" />
     <Compile Include="Minecraft.cs" />
     <Compile Include="Minecraft.Events.cs" />
-    <Compile Include="Minecraft.Yggdrasil.cs" />
     <Compile Include="Network\NetworkHandler.cs" />
     <Compile Include="Network\Packets\Server\DestroyEntitiesPacket.cs" />
     <Compile Include="Network\Packets\Server\DisconnectPacket.cs" />
@@ -144,7 +150,7 @@
     <Compile Include="Network\Packets\Server\EntityHeadLookPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityLookAndRelativeMovePacket.cs" />
     <Compile Include="Network\Packets\Server\EntityLookPacket.cs" />
-    <Compile Include="Network\Packets\Server\BEntityMetadataPacket.cs" />
+    <Compile Include="Network\Packets\Server\EntityMetadataPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityPropertiesPacket.cs" />
     <Compile Include="Network\Packets\Server\EntityRelativeMovePacket.cs" />
@@ -188,10 +194,10 @@
     <Compile Include="Network\Packets\Client\SoundOrParticleEffectPacket.cs" />
     <Compile Include="Network\Packets\Server\SpawnExperienceOrbPacket.cs" />
     <Compile Include="Network\Packets\Server\SpawnGlobalEntityPacket.cs" />
-    <Compile Include="Network\Packets\Server\BSpawnMobPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnMobPacket.cs" />
     <Compile Include="Network\Packets\Server\SpawnObjectPacket.cs" />
     <Compile Include="Network\Packets\Server\SpawnPaintingPacket.cs" />
-    <Compile Include="Network\Packets\Server\BSpawnPlayerPacket.cs" />
+    <Compile Include="Network\Packets\Server\SpawnPlayerPacket.cs" />
     <Compile Include="Network\Packets\Server\SpawnPositionPacket.cs" />
     <Compile Include="Network\Packets\Client\SteerVehiclePacket.cs" />
     <Compile Include="Network\Packets\Server\StatisticsPacket.cs" />
@@ -204,7 +210,7 @@
     <Compile Include="Network\Packets\Client\UseEntityPacket.cs" />
     <Compile Include="Network\Packets\Server\WindowItemsPacket.cs" />
     <Compile Include="Network\Packets\Server\WindowPropertyPacket.cs" />
-    <Compile Include="Data\Player.cs" />
+    <Compile Include="Network\Yggdrasil.cs" />
     <Compile Include="TestClient.cs" />
   </ItemGroup>
   <ItemGroup>

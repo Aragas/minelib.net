@@ -159,7 +159,7 @@ namespace MinecraftClient.Network
             catch (SocketException e)
             {
                 Console.WriteLine("Error");
-                Stop();
+                //Stop();
                 return false;
             }
             return true;

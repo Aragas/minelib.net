@@ -29,4 +29,5 @@
         DoubleClick                 = 0,
         Invalid
     }
+
 }

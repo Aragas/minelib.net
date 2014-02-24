@@ -9,7 +9,7 @@ namespace MinecraftClient.BigData
     {
         public ThisPlayer()
         {
-            Effects = new List<PlayerEffect>();
+            Effects = new Dictionary<int, PlayerEffect>();
             Windows = new List<PlayerWindow>();
         }
 
@@ -18,31 +18,33 @@ namespace MinecraftClient.BigData
             // Update status about Effects here
             // Update all valuer here.. i think..
 
-            return new PlayerPacket { OnGround = Position.OnGround };
+            return new PlayerPacket {OnGround = Position.OnGround};
         }
 
         public int EntityID;
 
-        public PlayerPosition Position;//
-        public PlayerLook Look;//
-        public PlayerSpawnPosition SpawnPosition;//
+        public PlayerPosition Position; //
+        public PlayerNewPosition NewPosition; //
+        public PlayerLook Look; //
         public PlayerAbilities Abilities;
-    
-        public PlayerHealth Health;//
-        public PlayerItems Items;//
-        public PlayerHeldItem HeldItem;//
-        public PlayerExperience Experience;//
-        public PlayerAnimation Animation;///
+
+        public PlayerHealth Health; //
+        public PlayerItems Items; //
+        public PlayerHeldItem HeldItem; //
+        public PlayerExperience Experience; //
+        public PlayerAnimation Animation;
+
+        ///
         public PlayerStatistics Statistics;
-        public List<PlayerEffect> Effects;
+
+        public Dictionary<int, PlayerEffect> Effects;
         public List<PlayerWindow> Windows;
         public PlayerScoreboardObjective ScoreboardObjective;
 
-        public void WindowItems(byte windowId, ItemStack[] slotData)
+        public void SetWindowItems(byte windowId, ItemStack[] slotData)
         {
             if (Items.WindowId == windowId)
                 Items.SlotData = slotData;
-            
         }
 
         public void SetSlot(byte windowId, short slot, ItemStack slotData)
@@ -52,13 +54,18 @@ namespace MinecraftClient.BigData
 
         }
 
-        public void OpenWindow(byte windowId, byte inventoryType, string windowTitle, 
-            byte NumberOfSlots, bool UseProvidedWindowTitle, int EntityID = 0)
+        public void OpenWindow(byte windowId, byte inventoryType, string windowTitle, byte NumberOfSlots,
+            bool UseProvidedWindowTitle, int? EntityID = 0)
         {
         }
 
         public void CloseWindow(byte windowId)
-        { 
+        {
+        }
+
+        public void ConfirmTransaction(byte windowsId, short actionNumber, bool accepted)
+        {
+            
         }
     }
 
@@ -69,9 +76,11 @@ namespace MinecraftClient.BigData
         public bool Initialized;
     }
 
-    public struct PlayerSpawnPosition
+    public struct PlayerNewPosition
     {
-        public int X, Y, Z;
+        public double X, Y, Z;
+        public float Yaw, Pitch;
+        public bool OnGround;
     }
 
     public struct PlayerAbilities
